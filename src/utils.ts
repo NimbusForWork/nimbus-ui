@@ -1,27 +1,32 @@
 export interface IColor {
-  color: {
-    primary100: string
-    primary200: string
-    primary300: string
-    primary400: string
-    primary500: string
-    primary600: string
-    primary700: string
+  color?:
+    | 'primary100'
+    | 'primary200'
+    | 'primary300'
+    | 'primary400'
+    | 'primary500'
+    | 'primary600'
+    | 'primary700'
+    | 'neutral100'
+    | 'neutral200'
+    | 'neutral300'
+    | 'neutral400'
+    | 'neutral500'
+    | 'neutral600'
+    | 'neutral700'
+    | 'danger100'
+    | 'danger200'
+    | 'danger300'
+    | 'danger400'
+    | 'danger500'
+    | 'danger600'
+    | 'danger700'
+}
 
-    neutral100: string
-    neutral200: string
-    neutral300: string
-    neutral400: string
-    neutral500: string
-    neutral600: string
-    neutral700: string
+export interface ITextSize {
+  size?: 'small' | 'normal' | 'heading1' | 'heading2' | 'heading3'
+}
 
-    danger100: string
-    danger200: string
-    danger300: string
-    danger400: string
-    danger500: string
-    danger600: string
-    danger700: string
-  }
+export interface IFontWeight {
+  fontWeight?: 'bold'
 }
