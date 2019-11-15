@@ -2,7 +2,9 @@
   "name": "nimbus-ui",
   "version": "0.0.1",
   "description": "Ninbus UI Components",
-  "main": "index.js",
+  "main": "build/index.js",
+  "module": "build/index.es.js",
+  "jsnext:main": "build/index.es.js",
   "scripts": {
     "build": "rollup -c",
     "storybook": "start-storybook -p 9001 -c .storybook",
