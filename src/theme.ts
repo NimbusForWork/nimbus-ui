@@ -1,6 +1,30 @@
-import { IColor } from './utils'
+export interface ITheme {
+  colors: {
+    primary100: string
+    primary200: string
+    primary300: string
+    primary400: string
+    primary500: string
+    primary600: string
+    primary700: string
 
-export interface ITheme extends IColor {
+    neutral100: string
+    neutral200: string
+    neutral300: string
+    neutral400: string
+    neutral500: string
+    neutral600: string
+    neutral700: string
+
+    danger100: string
+    danger200: string
+    danger300: string
+    danger400: string
+    danger500: string
+    danger600: string
+    danger700: string
+  }
+
   textSize: {
     small: number
     normal: number
@@ -11,7 +35,7 @@ export interface ITheme extends IColor {
 }
 
 const theme: ITheme = {
-  color: {
+  colors: {
     primary100: '#CFE2EE',
     primary200: '#9EC5DE',
     primary300: '#6EA8CD',
