@@ -1,0 +1,8 @@
+
+.DS_Store
+node_modules
+build
+coverage
+
+__tests__/__snapshots__
+.jest
