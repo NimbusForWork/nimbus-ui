@@ -1,12 +1,13 @@
 {
   "name": "nimbus-ui",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Ninbus UI Components",
   "main": "build/index.js",
   "module": "build/index.es.js",
   "jsnext:main": "build/index.es.js",
   "scripts": {
     "build": "rollup -c",
+    "prepare": "npm run build",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "lint": "eslint '**/*.{ts,tsx}'",
     "test": "jest",
@@ -73,10 +74,9 @@
   },
   "keywords": [
     "Nimbus",
-    "React",
-    "ReactNative"
+    "react",
+    "react-native"
   ],
-  "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/NimbusForWork/nimbus-ui/issues"
