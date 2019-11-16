@@ -2,6 +2,7 @@ import typescript from 'rollup-plugin-typescript2'
 import commonjs from 'rollup-plugin-commonjs'
 import external from 'rollup-plugin-peer-deps-external'
 import resolve from 'rollup-plugin-node-resolve'
+import url from 'rollup-plugin-url'
 
 import pkg from './package.json'
 
@@ -35,6 +36,13 @@ export default {
         'node_modules/react/react.js': ['Children', 'Component', 'PropTypes', 'createElement'],
         'node_modules/react-dom/index.js': ['render']
       }
+    }),
+    url({
+      // by default, rollup-plugin-url will not handle font files
+      include: ['src/fonts/*.ttf'],
+      // setting infinite limit will ensure that the files
+      // are always bundled with the code, not copied to /dist
+      limit: Infinity
     })
   ]
 }
