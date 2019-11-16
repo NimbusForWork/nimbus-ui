@@ -8,7 +8,7 @@ import { ITheme } from '../theme'
 const Container = styled.Text`
   color: ${({ color, theme }: { color: string; theme: ITheme }) => theme.colors[color as string]};
   font-size: ${({ size, theme }: { size: string; theme: ITheme }) => theme.textSize[size]};
-  font-family: 'inter_regular';
+  font-family: ${({ theme }: { theme: ITheme }) => theme.fontFamily};
 
   ${({ size }: { size: string }) => {
     if (size.indexOf('heading') !== -1) {

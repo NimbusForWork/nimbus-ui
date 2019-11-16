@@ -25,6 +25,7 @@ export interface ITheme {
     danger700: string
   }
 
+  fontFamily: string
   textSize: {
     small: number
     normal: number
@@ -60,6 +61,7 @@ const theme: ITheme = {
     danger600: '#B60505',
     danger700: '#7B0303'
   },
+  fontFamily: 'Inter-Regular',
   textSize: {
     small: 12,
     normal: 15,
