@@ -25,7 +25,6 @@ export interface ITheme {
     danger700: string
   }
 
-  fontFamily: string
   textSize: {
     small: number
     normal: number
@@ -33,6 +32,9 @@ export interface ITheme {
     heading2: number
     heading3: number
   }
+
+  fontFamily: string
+  platform: 'ios' | 'android' | 'windows' | 'macos' | 'web'
 }
 
 const theme: ITheme = {
@@ -61,14 +63,17 @@ const theme: ITheme = {
     danger600: '#B60505',
     danger700: '#7B0303'
   },
-  fontFamily: 'Inter-Regular',
+
   textSize: {
     small: 12,
     normal: 15,
     heading1: 18,
     heading2: 20,
     heading3: 24
-  }
+  },
+
+  fontFamily: 'Inter',
+  platform: 'web'
 }
 
 export default theme
