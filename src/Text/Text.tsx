@@ -11,7 +11,7 @@ const Container = styled.Text`
 
   ${({ theme, size, fontWeight }: { theme: ITheme; size: string; fontWeight: string }) => {
     if (theme.platform !== 'web') {
-      if (size.indexOf('heading') !== -1 || fontWeight) {
+      if ('heading'.indexOf(size) !== -1 || fontWeight) {
         return css`
           font-family: ${`${theme.fontFamily}-Bold`}};
         `
@@ -24,8 +24,8 @@ const Container = styled.Text`
 
     return css`
       ${size.indexOf('heading') !== -1 && `font-weight: bold;`};
-
       ${fontWeight && `font-weight: ${fontWeight};`}
+      font-family: ${`${theme.fontFamily}-Regular`}};
     `
   }}
 
