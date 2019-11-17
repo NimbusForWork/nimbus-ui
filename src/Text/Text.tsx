@@ -23,7 +23,7 @@ const Container = styled.Text`
     }
 
     return css`
-      ${size.indexOf('heading') !== -1 && `font-weight: bold;`};
+      ${size.includes('heading') && `font-weight: bold;`};
       ${fontWeight && `font-weight: ${fontWeight};`}
       font-family: ${`${theme.fontFamily}-Regular`}};
     `
