@@ -16,6 +16,10 @@ const Container = styled.Text`
           font-family: ${`${theme.fontFamily}-Bold`}};
         `
       }
+
+      return css`
+        font-family: ${`${theme.fontFamily}-Regular`}};
+      `
     }
 
     return css`

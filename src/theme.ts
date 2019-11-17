@@ -71,7 +71,6 @@ const theme: ITheme = {
     heading2: 20,
     heading3: 24
   },
-
   fontFamily: 'Inter',
   platform: 'web'
 }
