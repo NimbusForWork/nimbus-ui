@@ -11,7 +11,7 @@ const Container = styled.Text`
 
   ${({ theme, size, fontWeight }: { theme: ITheme; size: string; fontWeight: string }) => {
     if (theme.platform !== 'web') {
-      if ('heading'.indexOf(size) !== -1 || fontWeight) {
+      if (size.includes('heading') || fontWeight) {
         return css`
           font-family: ${`${theme.fontFamily}-Bold`}};
         `
