@@ -8,23 +8,26 @@ import { ITheme } from '../theme'
 const Container = styled.Text`
   color: ${({ color, theme }: { color: string; theme: ITheme }) => theme.colors[color as string]};
   font-size: ${({ size, theme }: { size: string; theme: ITheme }) => theme.textSize[size]};
-  font-family: ${({ theme }: { theme: ITheme }) => theme.fontFamily};
 
-  ${({ size }: { size: string }) => {
-    if (size.indexOf('heading') !== -1) {
+  ${({ theme, size, fontWeight }: { theme: ITheme; size: string; fontWeight: string }) => {
+    if (theme.platform !== 'web') {
+      if (size.includes('heading') || fontWeight) {
+        return css`
+          font-family: ${`${theme.fontFamily}-Bold`}};
+        `
+      }
+
       return css`
-        font-weight: bold;
+        font-family: ${`${theme.fontFamily}-Regular`}};
       `
     }
 
-    return null
+    return css`
+      ${size.includes('heading') && `font-weight: bold;`};
+      ${fontWeight && `font-weight: ${fontWeight};`}
+      font-family: ${`${theme.fontFamily}-Regular`}};
+    `
   }}
-  
-  ${({ fontWeight }: { fontWeight: string }) =>
-    fontWeight &&
-    css`
-      font-weight: ${fontWeight};
-    `}
 
   ${({
     margin,
