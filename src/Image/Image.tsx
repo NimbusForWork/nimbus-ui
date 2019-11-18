@@ -12,13 +12,9 @@ const Container = styled.Image`
       `
     }
 
-    if (typeof borderRadius !== 'undefined') {
-      return css`
-        border-radius: ${borderRadius};
-      `
-    }
-
-    return null
+    return css`
+      border-radius: ${borderRadius};
+    `
   }}
 
   ${({
@@ -68,7 +64,7 @@ const Image: React.FC<IProps> = ({
   width,
   height,
   rounded,
-  borderRadius,
+  borderRadius = 3,
   margin,
   marginTop,
   marginBottom,
