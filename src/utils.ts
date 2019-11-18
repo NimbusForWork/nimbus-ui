@@ -21,6 +21,8 @@ export interface IColor {
     | 'danger500'
     | 'danger600'
     | 'danger700'
+    | 'background100'
+    | 'background200'
 }
 
 export interface ITextSize {

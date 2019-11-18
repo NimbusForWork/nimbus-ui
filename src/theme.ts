@@ -23,6 +23,9 @@ export interface ITheme {
     danger500: string
     danger600: string
     danger700: string
+
+    background100: string
+    background200: string
   }
 
   textSize: {
@@ -61,7 +64,10 @@ const theme: ITheme = {
     danger400: '#E35959',
     danger500: '#DC3030',
     danger600: '#B60505',
-    danger700: '#7B0303'
+    danger700: '#7B0303',
+
+    background100: '#FFFFFF',
+    background200: '#FAFAFA'
   },
 
   textSize: {
