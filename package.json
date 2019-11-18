@@ -12,7 +12,8 @@
     "lint": "eslint '**/*.{ts,tsx}'",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "deploy": "npm version patch; npm publish --access=public"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.7.2",
@@ -91,6 +92,9 @@
       "\\.(ttf|woff|woff2)$": "<rootDir>/__mocks__/fileMock.js",
       "styled-components": "<rootDir>/node_modules/styled-components/native/dist/styled-components.native.cjs.js"
     }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "husky": {
     "hooks": {
