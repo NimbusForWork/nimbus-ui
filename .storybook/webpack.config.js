@@ -12,5 +12,6 @@ module.exports = ({ config, mode }) => {
   config.resolve.alias = {
     'react-native$': require.resolve('react-native-web')
   }
+
   return config
 }

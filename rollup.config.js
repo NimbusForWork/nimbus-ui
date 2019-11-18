@@ -38,10 +38,7 @@ export default {
       }
     }),
     url({
-      // by default, rollup-plugin-url will not handle font files
       include: ['src/fonts/*.ttf'],
-      // setting infinite limit will ensure that the files
-      // are always bundled with the code, not copied to /dist
       limit: Infinity
     })
   ]
