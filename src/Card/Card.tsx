@@ -35,6 +35,33 @@ const Container = styled.View`
       padding-right: ${paddingRight || 15};
     `
   }}
+
+  ${({
+    margin,
+    marginTop,
+    marginBottom,
+    marginLeft,
+    marginRight
+  }: {
+    margin: number
+    marginTop: number
+    marginBottom: number
+    marginLeft: number
+    marginRight: number
+  }) => {
+    if (Number(margin)) {
+      return css`
+        margin: ${margin}px;
+      `
+    }
+
+    return css`
+      margin-top: ${marginTop || 0};
+      margin-bottom: ${marginBottom || 0};
+      margin-left: ${marginLeft || 0};
+      margin-right: ${marginRight || 0};
+    `
+  }}
 `
 
 interface IProps {
