@@ -1,11 +1,15 @@
 import React from 'react'
 import styled, { css } from 'styled-components/native'
 
-import { ITheme } from '../index'
+import { ITheme } from '../theme'
+import { IColor } from '../utils'
 
 const Container = styled.View`
-  flex: 1;
-  border-color: ${({ theme }: { theme: ITheme }) => theme.colors.neutral100};
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  border-color: ${({ theme, color }: { theme: ITheme; color: string }) => theme.colors[color]};
   border-width: 1;
   border-style: solid;
   border-radius: 3;
@@ -30,35 +34,43 @@ const Container = styled.View`
     }
 
     return css`
-      padding-top: ${paddingTop || 15};
-      padding-bottom: ${paddingBottom || 15};
-      padding-left: ${paddingLeft || 15};
-      padding-right: ${paddingRight || 15};
+      padding-top: ${paddingTop || 3};
+      padding-bottom: ${paddingBottom || 3};
+      padding-left: ${paddingLeft || 5};
+      padding-right: ${paddingRight || 5};
     `
   }}
+  padding-top: 3;
+  padding-bottom: 3;
+  padding-left: 5;
+  padding-right: 5;
+
+  margin-top: ${({ marginTop }: { marginTop: number }) => marginTop || 0};
+  margin-bottom: ${({ marginBottom }: { marginBottom: number }) => marginBottom || 0};
+  margin-left: ${({ marginLeft }: { marginLeft: number }) => marginLeft || 0};
+  margin-right: ${({ marginRight }: { marginRight: number }) => marginRight || 0};
 `
 
-interface IProps {
+interface IProps extends IColor {
   padding?: number
   paddingTop?: number
   paddingBottom?: number
   paddingLeft?: number
   paddingRight?: number
-  margin?: number
   marginTop?: number
   marginBottom?: number
   marginLeft?: number
   marginRight?: number
 }
 
-const Card: React.FC<IProps> = ({
+const Tag: React.FC<IProps> = ({
   children,
+  color = 'neutral100',
   padding,
   paddingTop,
   paddingBottom,
   paddingLeft,
   paddingRight,
-  margin,
   marginTop,
   marginBottom,
   marginLeft,
@@ -66,12 +78,12 @@ const Card: React.FC<IProps> = ({
 }) => {
   return (
     <Container
+      color={color}
       padding={padding}
       paddingTop={paddingTop}
       paddingBottom={paddingBottom}
       paddingLeft={paddingLeft}
       paddingRigt={paddingRight}
-      margin={margin}
       marginTop={marginTop}
       marginBottom={marginBottom}
       marginLeft={marginLeft}
@@ -82,4 +94,4 @@ const Card: React.FC<IProps> = ({
   )
 }
 
-export default Card
+export default Tag
