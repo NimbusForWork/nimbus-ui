@@ -65,6 +65,7 @@ interface IProps extends TouchableOpacityProps {
   variant?: 'contained' | 'outlined' | 'flat'
   color?: 'primary' | 'danger' | 'neutral'
   loading?: boolean
+  disabled?: boolean
   margin?: number
   marginTop?: number
   marginBottom?: number
@@ -79,6 +80,7 @@ const Button: React.FC<IProps> = props => {
     variant,
     color = 'primary',
     loading,
+    disabled,
     margin,
     marginTop,
     marginBottom,
@@ -91,7 +93,7 @@ const Button: React.FC<IProps> = props => {
   return (
     <Container
       {...props}
-      disabled={loading}
+      disabled={loading || disabled}
       margin={margin}
       marginTop={marginTop}
       marginBottom={marginBottom}
