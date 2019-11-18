@@ -1,13 +1,13 @@
 {
   "name": "@nimbusforwork/nimbus-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ninbus UI Components",
   "main": "build/index.js",
   "module": "build/index.es.js",
   "jsnext:main": "build/index.es.js",
   "scripts": {
     "build": "rollup -c",
-    "prepare": "npm run build",
+    "prepublish": "npm run build",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "lint": "eslint '**/*.{ts,tsx}'",
     "test": "jest",

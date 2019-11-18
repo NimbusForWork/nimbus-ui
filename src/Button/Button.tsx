@@ -16,9 +16,6 @@ const Container = styled.TouchableOpacity`
     if (variant === 'contained') {
       return css`
         background-color: ${theme.colors[`${color}500`]};
-        ${Text} & {
-          color: ${theme.colors.background100} !important;
-        }
       `
     }
     if (variant === 'outlined') {
@@ -26,10 +23,6 @@ const Container = styled.TouchableOpacity`
         border-color: ${theme.colors[`${color}500`]};
         border-style: solid;
         border-width: 1;
-
-        ${Text} & {
-          color: ${theme.colors[`${color}500`]};
-        }
       `
     }
 
