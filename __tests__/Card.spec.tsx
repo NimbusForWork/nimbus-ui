@@ -3,13 +3,13 @@ import { create } from 'react-test-renderer'
 import { ThemeProvider } from 'styled-components/native'
 import 'jest-styled-components/native'
 
-import { Text } from '../src'
+import { Card } from '../src'
 import theme from '../src/theme'
 
-test('Text should render', () => {
+test('Card should render', () => {
   const component = create(
     <ThemeProvider theme={theme}>
-      <Text text="Test Passed" />
+      <Card>Content Card</Card>
     </ThemeProvider>
   )
 

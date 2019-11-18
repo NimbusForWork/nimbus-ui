@@ -1,6 +1,6 @@
 {
   "name": "@nimbusforwork/nimbus-ui",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Ninbus UI Components",
   "main": "build/index.js",
   "module": "build/index.es.js",
@@ -10,7 +10,7 @@
     "prepublish": "npm run build",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "lint": "eslint '**/*.{ts,tsx}'",
-    "test": "jest",
+    "test": "jest -u",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "deploy": "npm version patch; npm publish --access=public"

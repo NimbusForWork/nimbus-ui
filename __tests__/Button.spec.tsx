@@ -6,7 +6,7 @@ import 'jest-styled-components/native'
 import { Button } from '../src'
 import theme from '../src/theme'
 
-test(' Button should render', () => {
+test('Button should render', () => {
   const component = create(
     <ThemeProvider theme={theme}>
       <Button title="Click Me" />

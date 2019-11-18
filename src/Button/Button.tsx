@@ -9,8 +9,11 @@ const Container = styled.TouchableOpacity`
   align-items: center;
   align-content: center;
   flex-direction: row;
-  border-radius: 5;
-  height: 50;
+  border-radius: 3;
+  padding-top: 13;
+  padding-bottom: 13;
+  padding-left: 30;
+  padding-right: 30;
 
   ${({ variant, color, theme }: { variant: string; color: string; theme: ITheme }) => {
     if (variant === 'contained') {
@@ -28,6 +31,33 @@ const Container = styled.TouchableOpacity`
 
     return null
   }}
+
+  ${({
+    margin,
+    marginTop,
+    marginBottom,
+    marginLeft,
+    marginRight
+  }: {
+    margin: number
+    marginTop: number
+    marginBottom: number
+    marginLeft: number
+    marginRight: number
+  }) => {
+    if (Number(margin)) {
+      return css`
+        margin: ${margin}px;
+      `
+    }
+
+    return css`
+      margin-top: ${marginTop || 0};
+      margin-bottom: ${marginBottom || 0};
+      margin-left: ${marginLeft || 0};
+      margin-right: ${marginRight || 0};
+    `
+  }}
 `
 
 interface IProps extends TouchableOpacityProps {
@@ -35,15 +65,39 @@ interface IProps extends TouchableOpacityProps {
   variant?: 'contained' | 'outlined' | 'flat'
   color?: 'primary' | 'danger' | 'neutral'
   loading?: boolean
+  margin?: number
+  marginTop?: number
+  marginBottom?: number
+  marginLeft?: number
+  marginRight?: number
 }
 
 const Button: React.FC<IProps> = props => {
-  const { children, title, variant, color, loading } = props
+  const {
+    children,
+    title,
+    variant,
+    color = 'primary',
+    loading,
+    margin,
+    marginTop,
+    marginBottom,
+    marginLeft,
+    marginRight
+  } = props
 
   const textColor: any = variant === 'contained' ? 'background100' : `${color}500`
 
   return (
-    <Container {...props} disabled={loading}>
+    <Container
+      {...props}
+      disabled={loading}
+      margin={margin}
+      marginTop={marginTop}
+      marginBottom={marginBottom}
+      marginLeft={marginLeft}
+      marginRight={marginRight}
+    >
       {children || <Text text={title} fontWeight="bold" color={textColor} />}
     </Container>
   )
