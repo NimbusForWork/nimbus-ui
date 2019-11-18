@@ -6,3 +6,6 @@ coverage
 
 __tests__/__snapshots__
 .jest
+storybook
+# Local Netlify folder
+.netlify
