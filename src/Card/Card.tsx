@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components/native'
 import { ITheme } from '../index'
 
 const Container = styled.View`
-  flex: 1;
   border-color: ${({ theme }: { theme: ITheme }) => theme.colors.neutral100};
   border-width: 1;
   border-style: solid;
