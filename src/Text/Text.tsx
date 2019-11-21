@@ -8,25 +8,13 @@ import { ITheme } from '../theme'
 const Container = styled.Text`
   color: ${({ color, theme }: { color: string; theme: ITheme }) => theme.colors[color as string]};
   font-size: ${({ size, theme }: { size: string; theme: ITheme }) => theme.textSize[size]};
-
-  ${({ theme, fontWeight }: { theme: ITheme; fontWeight: string }) => {
-    if (fontWeight === 'bold') {
-      return css`
-        font-family: ${`${theme.fontFamily}-Bold`}};
-        font-weight: bold;
-      `
-    }
-
-    return css`
-      font-family: ${`${theme.fontFamily}-Regular`}};
-    `
-  }}};
+  font-family: ${({ theme, fontWeight }: { theme: ITheme; fontWeight: string }) => `${theme.fontFamily}_${fontWeight}`};
 
   ${({ margin, theme }: { margin: any; theme: ITheme }) => {
     if (margin) {
       if (typeof margin === 'string') {
         return css`
-          margin: ${theme.spacing[margin]};
+          margin: ${theme.spacing[margin]}px;
         `
       }
 
@@ -46,7 +34,7 @@ interface IText extends IColor, ITextSize, ISpacing, IFontWeight, TextProps {
   text: string
 }
 
-const Text: React.FC<IText> = ({ color = 'neutral500', text, size = 'normal', margin, fontWeight }) => {
+const Text: React.FC<IText> = ({ color = 'gray700', text, size = 'base', margin, fontWeight = 'base' }) => {
   return (
     <Container color={color} size={size} margin={margin} fontWeight={fontWeight}>
       {text}
@@ -55,30 +43,3 @@ const Text: React.FC<IText> = ({ color = 'neutral500', text, size = 'normal', ma
 }
 
 export default Text
-
-/* ${({
-    margin,
-    marginTop,
-    marginBottom,
-    marginLeft,
-    marginRight
-  }: {
-    margin: string
-    marginTop: string
-    marginBottom: string
-    marginLeft: string
-    marginRight: string
-  }) => {
-    if (Number(margin)) {
-      return css`
-        margin: ${margin}px;
-      `
-    }
-
-    return css`
-      margin-top: ${marginTop || 0};
-      margin-bottom: ${marginBottom || 0};
-      margin-left: ${marginLeft || 0};
-      margin-right: ${marginRight || 0};
-    `
-  }}; */
