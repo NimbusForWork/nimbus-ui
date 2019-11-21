@@ -1,0 +1,17 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import { ThemeProvider } from 'styled-components/native'
+
+import { Text, theme } from '../src'
+
+<Meta title="MDX|Text" component={Text} />
+
+# Button
+
+With `MDX` we can define a story for `Button` right in the middle of our
+markdown documentation.
+
+<Preview>
+  <Story name="Text">
+    <Text text="Welcome to Nimbus for work" margin={{ top: 'lg' }} size="sm" fontWeight="bold" />
+   </Story>   
+</Preview>

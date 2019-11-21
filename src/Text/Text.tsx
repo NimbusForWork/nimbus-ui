@@ -30,11 +30,11 @@ const Container = styled.Text`
   }};
 `
 
-interface IText extends IColor, ITextSize, ISpacing, IFontWeight, TextProps {
+interface IProps extends IColor, ITextSize, ISpacing, IFontWeight, TextProps {
   text: string
 }
 
-const Text: React.FC<IText> = ({ color = 'gray700', text, size = 'base', margin, fontWeight = 'base' }) => {
+const Text: React.FC<IProps> = ({ color = 'neutral700', text, size = 'base', margin, fontWeight = 'base' }) => {
   return (
     <Container color={color} size={size} margin={margin} fontWeight={fontWeight}>
       {text}

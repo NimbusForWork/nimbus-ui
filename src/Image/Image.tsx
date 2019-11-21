@@ -1,90 +1,59 @@
 import React from 'react'
 import styled, { css } from 'styled-components/native'
 
+import { IRounded, ISpacing } from '../utils'
+
+import { ITheme } from '..'
+
 const Container = styled.Image`
   width: ${({ width }: { width: number }) => width};
   height: ${({ height }: { height: number }) => height};
 
-  ${({ rounded, width, borderRadius }: { rounded: boolean; width: number; borderRadius: number }) => {
+  ${({ rounded, width, theme }: { rounded: string; width: number; theme: ITheme }) => {
     if (rounded) {
+      if (rounded === 'full') {
+        return css`
+          border-radius: ${width / 2};
+        `
+      }
+
       return css`
-        border-radius: ${width / 2};
+        border-radius: ${theme.rounded[rounded]};
       `
     }
 
-    return css`
-      border-radius: ${borderRadius};
-    `
+    return null
   }}
 
-  ${({
-    margin,
-    marginTop,
-    marginBottom,
-    marginLeft,
-    marginRight
-  }: {
-    margin: number
-    marginTop: number
-    marginBottom: number
-    marginLeft: number
-    marginRight: number
-  }) => {
-    if (Number(margin)) {
+  ${({ margin, theme }: { margin: any; theme: ITheme }) => {
+    if (margin) {
+      if (typeof margin === 'string') {
+        return css`
+          margin: ${theme.spacing[margin]}px;
+        `
+      }
+
       return css`
-        margin: ${margin}px;
+        margin-top: ${theme.spacing[margin.top || 'none']};
+        margin-bottom: ${theme.spacing[margin.bottom || 'none']};
+        margin-left: ${theme.spacing[margin.left || 'none']};
+        margin-right: ${theme.spacing[margin.right || 'none']};
       `
     }
 
-    return css`
-      margin-top: ${marginTop || 0};
-      margin-bottom: ${marginBottom || 0};
-      margin-left: ${marginLeft || 0};
-      margin-right: ${marginRight || 0};
-    `
-  }}
+    return null
+  }};
 `
 
-interface IProps {
+interface IProps extends IRounded, ISpacing {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   src: any
   width: number
   height: number
-  rounded?: boolean
-  borderRadius?: number
-  margin?: number
-  marginTop?: number
-  marginBottom?: number
-  marginLeft?: number
-  marginRight?: number
 }
 
-const Image: React.FC<IProps> = ({
-  src,
-  width,
-  height,
-  rounded,
-  borderRadius = 3,
-  margin,
-  marginTop,
-  marginBottom,
-  marginLeft,
-  marginRight
-}) => {
-  return (
-    <Container
-      source={src}
-      width={width}
-      height={height}
-      rounded={rounded}
-      borderRadius={borderRadius}
-      margin={margin}
-      marginTop={marginTop}
-      marginBottom={marginBottom}
-      marginLeft={marginLeft}
-      marginRight={marginRight}
-    />
-  )
+const Image: React.FC<IProps> = ({ src, width, height, rounded, margin }) => {
+  return <Container source={src} width={width} height={height} rounded={rounded} margin={margin} />
 }
 
 export default Image

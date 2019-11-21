@@ -47,7 +47,7 @@ export interface IFontWeight {
   fontWeight?: 'base' | 'medium' | 'bold'
 }
 
-export interface IPosition {
+export interface ISpacingPosition {
   top?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl'
   bottom?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl'
   left?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl'
@@ -55,6 +55,6 @@ export interface IPosition {
 }
 
 export interface ISpacing {
-  margin?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | IPosition
-  padding?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | IPosition
+  margin?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | ISpacingPosition
+  padding?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | ISpacingPosition
 }

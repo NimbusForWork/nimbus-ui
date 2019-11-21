@@ -3,6 +3,7 @@ import { TouchableOpacityProps } from 'react-native'
 import styled, { css } from 'styled-components/native'
 
 import { Text, ITheme } from '../index'
+import { ISpacing } from '../utils'
 
 const Container = styled.TouchableOpacity`
   justify-content: center;
@@ -10,20 +11,17 @@ const Container = styled.TouchableOpacity`
   align-content: center;
   flex-direction: row;
   border-radius: 3;
-  padding-top: 13;
-  padding-bottom: 13;
-  padding-left: 30;
-  padding-right: 30;
+  height: 50;
 
   ${({ variant, color, theme }: { variant: string; color: string; theme: ITheme }) => {
     if (variant === 'contained') {
       return css`
-        background-color: ${theme.colors[`${color}500`]};
+        background-color: ${theme.colors[`${color}700`]};
       `
     }
     if (variant === 'outlined') {
       return css`
-        border-color: ${theme.colors[`${color}500`]};
+        border-color: ${theme.colors.neutral500};
         border-style: solid;
         border-width: 1;
       `
@@ -32,74 +30,41 @@ const Container = styled.TouchableOpacity`
     return null
   }}
 
-  ${({
-    margin,
-    marginTop,
-    marginBottom,
-    marginLeft,
-    marginRight
-  }: {
-    margin: number
-    marginTop: number
-    marginBottom: number
-    marginLeft: number
-    marginRight: number
-  }) => {
-    if (Number(margin)) {
+  ${({ margin, theme }: { margin: any; theme: ITheme }) => {
+    if (margin) {
+      if (typeof margin === 'string') {
+        return css`
+          margin: ${theme.spacing[margin]}px;
+        `
+      }
+
       return css`
-        margin: ${margin}px;
+        margin-top: ${theme.spacing[margin.top || 'none']};
+        margin-bottom: ${theme.spacing[margin.bottom || 'none']};
+        margin-left: ${theme.spacing[margin.left || 'none']};
+        margin-right: ${theme.spacing[margin.right || 'none']};
       `
     }
 
-    return css`
-      margin-top: ${marginTop || 0};
-      margin-bottom: ${marginBottom || 0};
-      margin-left: ${marginLeft || 0};
-      margin-right: ${marginRight || 0};
-    `
-  }}
+    return null
+  }};
 `
 
-interface IProps extends TouchableOpacityProps {
+interface IProps extends ISpacing, TouchableOpacityProps {
   title: string
   variant?: 'contained' | 'outlined' | 'flat'
   color?: 'primary' | 'danger' | 'neutral'
   loading?: boolean
   disabled?: boolean
-  margin?: number
-  marginTop?: number
-  marginBottom?: number
-  marginLeft?: number
-  marginRight?: number
 }
 
 const Button: React.FC<IProps> = props => {
-  const {
-    children,
-    title,
-    variant,
-    color = 'primary',
-    loading,
-    disabled,
-    margin,
-    marginTop,
-    marginBottom,
-    marginLeft,
-    marginRight
-  } = props
+  const { children, title, variant, color = 'primary', loading, disabled, margin } = props
 
-  const textColor: any = variant === 'contained' ? 'background100' : `${color}500`
+  const textColor: any = variant === 'contained' ? 'white' : `${color}700`
 
   return (
-    <Container
-      {...props}
-      disabled={loading || disabled}
-      margin={margin}
-      marginTop={marginTop}
-      marginBottom={marginBottom}
-      marginLeft={marginLeft}
-      marginRight={marginRight}
-    >
+    <Container {...props} color={color} disabled={loading || disabled} margin={margin}>
       {children || <Text text={title} fontWeight="bold" color={textColor} />}
     </Container>
   )
