@@ -28,5 +28,7 @@ stories.add('Text', () => {
   //   const fontWeight: any = select('Font Weight', optsFontWeight, 'bold')
   const fontWeight = boolean('Font Weight', false)
 
-  return <Text text={str} color={color} size={size} fontWeight={fontWeight ? 'bold' : undefined} />
+  return (
+    <Text text={str} margin={{ top: 'lg' }} color={color} size={size} fontWeight={fontWeight ? 'bold' : undefined} />
+  )
 })

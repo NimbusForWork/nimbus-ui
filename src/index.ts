@@ -14,7 +14,6 @@
 import { Text } from './Text'
 
 import baseColor, { IBaseColor } from './color'
+import theme, { ITheme } from './theme'
 
-export type IBaseColor = IBaseColor
-
-export { baseColor, Text }
+export { baseColor, Text, IBaseColor, theme, ITheme }

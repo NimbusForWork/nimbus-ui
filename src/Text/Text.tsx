@@ -2,45 +2,72 @@ import React from 'react'
 import { TextProps } from 'react-native'
 import styled, { css } from 'styled-components/native'
 
-import { IFontWeight, IColor, ITextSize } from '../utils'
+import { IFontWeight, IColor, ITextSize, ISpacing } from '../utils'
 import { ITheme } from '../theme'
 
 const Container = styled.Text`
   color: ${({ color, theme }: { color: string; theme: ITheme }) => theme.colors[color as string]};
   font-size: ${({ size, theme }: { size: string; theme: ITheme }) => theme.textSize[size]};
 
-  ${({ theme, size, fontWeight }: { theme: ITheme; size: string; fontWeight: string }) => {
-    if (theme.platform !== 'web') {
-      if (size.includes('heading') || fontWeight) {
-        return css`
-          font-family: ${`${theme.fontFamily}-Bold`}};
-        `
-      }
-
+  ${({ theme, fontWeight }: { theme: ITheme; fontWeight: string }) => {
+    if (fontWeight === 'bold') {
       return css`
-        font-family: ${`${theme.fontFamily}-Regular`}};
+        font-family: ${`${theme.fontFamily}-Bold`}};
+        font-weight: bold;
       `
     }
 
     return css`
-      ${size.includes('heading') && `font-weight: bold;`};
-      ${fontWeight && `font-weight: ${fontWeight};`}
       font-family: ${`${theme.fontFamily}-Regular`}};
     `
-  }}
+  }}};
 
-  ${({
+  ${({ margin, theme }: { margin: any; theme: ITheme }) => {
+    if (margin) {
+      if (typeof margin === 'string') {
+        return css`
+          margin: ${theme.spacing[margin]};
+        `
+      }
+
+      return css`
+        margin-top: ${theme.spacing[margin.top || 'none']};
+        margin-bottom: ${theme.spacing[margin.bottom || 'none']};
+        margin-left: ${theme.spacing[margin.left || 'none']};
+        margin-right: ${theme.spacing[margin.right || 'none']};
+      `
+    }
+
+    return null
+  }};
+`
+
+interface IText extends IColor, ITextSize, ISpacing, IFontWeight, TextProps {
+  text: string
+}
+
+const Text: React.FC<IText> = ({ color = 'neutral500', text, size = 'normal', margin, fontWeight }) => {
+  return (
+    <Container color={color} size={size} margin={margin} fontWeight={fontWeight}>
+      {text}
+    </Container>
+  )
+}
+
+export default Text
+
+/* ${({
     margin,
     marginTop,
     marginBottom,
     marginLeft,
     marginRight
   }: {
-    margin: number
-    marginTop: number
-    marginBottom: number
-    marginLeft: number
-    marginRight: number
+    margin: string
+    marginTop: string
+    marginBottom: string
+    marginLeft: string
+    marginRight: string
   }) => {
     if (Number(margin)) {
       return css`
@@ -54,43 +81,4 @@ const Container = styled.Text`
       margin-left: ${marginLeft || 0};
       margin-right: ${marginRight || 0};
     `
-  }};
-`
-
-interface IText extends IColor, ITextSize, IFontWeight, TextProps {
-  text: string
-  margin?: number
-  marginTop?: number
-  marginBottom?: number
-  marginLeft?: number
-  marginRight?: number
-}
-
-const Text: React.FC<IText> = ({
-  color = 'neutral500',
-  text,
-  size = 'normal',
-  margin,
-  marginTop,
-  marginBottom,
-  marginLeft,
-  marginRight,
-  fontWeight
-}) => {
-  return (
-    <Container
-      color={color}
-      size={size}
-      margin={margin}
-      marginTop={marginTop}
-      marginBottom={marginBottom}
-      marginLeft={marginLeft}
-      marginRight={marginRight}
-      fontWeight={fontWeight}
-    >
-      {text}
-    </Container>
-  )
-}
-
-export default Text
+  }}; */
