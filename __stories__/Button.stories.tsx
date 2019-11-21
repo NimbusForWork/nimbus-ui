@@ -1,20 +1,27 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, text, number, select } from '@storybook/addon-knobs'
+import { withKnobs, text, select } from '@storybook/addon-knobs'
 import { ThemeProvider } from 'styled-components/native'
 
 import { Button, theme } from '../src'
 
 const stories = storiesOf('Components', module)
+
 stories.addDecorator(withKnobs)
 
 stories.add('Button', () => {
   const title = text('Title', 'Click Me')
-  const margin = number('Margin', 0)
-  const marginTop = number('Margin Top', 0)
-  const marginBottom = number('Margin Bottom', 0)
-  const marginLeft = number('Margin Left', 0)
-  const marginRight = number('Margin Right', 0)
+
+  const optsMargin = {
+    None: 'none',
+    SM: 'sm',
+    Base: 'base',
+    MD: 'md',
+    LG: 'lg',
+    XL: 'xl',
+    '2XL': '2xl'
+  }
+  const margin: any = select('Margin', optsMargin, 'base')
 
   const optsColors = {
     Primary: 'primary',
@@ -28,16 +35,7 @@ stories.add('Button', () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Button
-        title={title}
-        variant={variant}
-        color={color}
-        margin={margin}
-        marginTop={marginTop}
-        marginBottom={marginBottom}
-        marginLeft={marginLeft}
-        marginRight={marginRight}
-      />
+      <Button title={title} variant={variant} color={color} margin={margin} />
     </ThemeProvider>
   )
 })

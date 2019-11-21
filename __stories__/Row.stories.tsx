@@ -2,12 +2,12 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs, text, number } from '@storybook/addon-knobs'
 
-import { Card, ListItem, Image } from '../src'
+import { Row, Image } from '../src'
 
 const stories = storiesOf('Components', module)
 stories.addDecorator(withKnobs)
 
-stories.add('List Item', () => {
+stories.add('Row', () => {
   const content = text('Text', 'Welcome to Nimbus For Work')
   const padding = number('Padding', 0)
   const paddingTop = number('Padding Top', 0)
@@ -21,15 +21,22 @@ stories.add('List Item', () => {
   )
 
   return (
-    <Card
-      padding={padding}
-      paddingTop={paddingTop}
-      paddingBottom={paddingBottom}
-      paddingLeft={paddingLeft}
-      paddingRigt={paddingRight}
-    >
-      <ListItem title="Item 1" avatar={() => <Image src={{ uri }} width={30} height={30} rounded />} bottomDivider />
-      <ListItem title="Item 2" avatar={() => <Image src={{ uri }} width={30} height={30} rounded />} bottomDivider />
-    </Card>
+    // <Card
+    //   padding={padding}
+    //   paddingTop={paddingTop}
+    //   paddingBottom={paddingBottom}
+    //   paddingLeft={paddingLeft}
+    //   paddingRigt={paddingRight}
+    // >
+    <>
+      <Row title="Item 1" avatar={() => <Image src={{ uri }} width={30} height={30} rounded="full" />} bottomDivider />
+      <Row
+        title="Item 2"
+        subtitle="Sub title item 2"
+        avatar={() => <Image src={{ uri }} width={30} height={30} rounded="full" />}
+        bottomDivider
+      />
+    </>
+    // </Card>
   )
 })

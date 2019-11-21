@@ -42,8 +42,8 @@ export interface ITheme {
     success800: string
     success900: string
 
-    background100: string
-    background200: string
+    dark: string
+    white: string
   }
 
   textSize: {
@@ -78,7 +78,6 @@ export interface ITheme {
   }
 
   fontFamily: string
-  platform: 'ios' | 'android' | 'windows' | 'macos' | 'web'
 }
 
 const theme: ITheme = {
@@ -123,8 +122,8 @@ const theme: ITheme = {
     success800: baseColor.green800,
     success900: baseColor.green900,
 
-    background100: '#FFFFFF',
-    background200: '#FAFAFA'
+    dark: '#000000',
+    white: '#FFFFFF'
   },
 
   textSize: {
@@ -158,8 +157,7 @@ const theme: ITheme = {
     '2xl': 12
   },
 
-  fontFamily: 'Inter',
-  platform: 'web'
+  fontFamily: 'body'
 }
 
 export default theme

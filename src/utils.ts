@@ -27,8 +27,8 @@ export interface IColor {
     | 'danger700'
     | 'danger800'
     | 'danger900'
-    | 'background100'
-    | 'background200'
+    | 'dark'
+    | 'white'
 }
 
 export interface ITextSize {
@@ -44,17 +44,17 @@ export interface IShadow {
 }
 
 export interface IFontWeight {
-  fontWeight?: 'bold'
+  fontWeight?: 'base' | 'medium' | 'bold'
 }
 
-export interface IPosition {
-  top?: string
-  bottom?: string
-  left?: string
-  right?: string
+export interface ISpacingPosition {
+  top?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl'
+  bottom?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl'
+  left?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl'
+  right?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl'
 }
 
 export interface ISpacing {
-  margin?: string | IPosition
-  padding?: string | IPosition
+  margin?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | ISpacingPosition
+  padding?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | ISpacingPosition
 }
