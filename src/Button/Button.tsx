@@ -51,7 +51,7 @@ const Container = styled.TouchableOpacity`
 `
 
 interface IProps extends ISpacing, TouchableOpacityProps {
-  title: string
+  title?: string
   variant?: 'contained' | 'outlined' | 'flat'
   color?: 'primary' | 'danger' | 'neutral'
   loading?: boolean
@@ -59,7 +59,7 @@ interface IProps extends ISpacing, TouchableOpacityProps {
 }
 
 const Button: React.FC<IProps> = props => {
-  const { children, title, variant, color = 'primary', loading, disabled, margin } = props
+  const { children, title = '', variant, color = 'primary', loading, disabled, margin } = props
 
   const textColor: any = variant === 'contained' ? 'white' : `${color}700`
 
