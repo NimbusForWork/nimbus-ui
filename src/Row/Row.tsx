@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components/native'
 
-import { Text } from '../index'
+import { Text, ITheme } from '../index'
 import baseColor from '../color'
 
 const Container = styled.View`
@@ -10,6 +10,7 @@ const Container = styled.View`
   padding-left: 15;
   padding-right: 15;
   min-height: 59;
+  background-color: ${({ theme }: { theme: ITheme }) => theme.colors.white};
 
   ${({ bottomDivider }: { bottomDivider: boolean }) =>
     bottomDivider &&

@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, text, select } from '@storybook/addon-knobs'
+import { withKnobs, text, select, boolean } from '@storybook/addon-knobs'
 import { ThemeProvider } from 'styled-components/native'
 
 import { Button, theme } from '../src'
@@ -31,11 +31,13 @@ stories.add('Button', () => {
   const color: any = select('Color', optsColors, 'primary')
 
   const optsVariant = { Flat: 'flat', Contained: 'contained', Outline: 'outlined' }
-  const variant: any = select('Colors', optsVariant, 'contained')
+  const variant: any = select('Variant', optsVariant, 'contained')
+
+  const clear = boolean('Clear Button', false)
 
   return (
     <ThemeProvider theme={theme}>
-      <Button title={title} variant={variant} color={color} margin={margin} />
+      <Button title={title} variant={variant} clear={clear} color={color} margin={margin} />
     </ThemeProvider>
   )
 })
