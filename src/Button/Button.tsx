@@ -1,5 +1,4 @@
 import React from 'react'
-import { TouchableOpacityProps } from 'react-native'
 import styled, { css } from 'styled-components/native'
 
 import { Text, ITheme } from '../index'
@@ -10,7 +9,7 @@ const Container = styled.TouchableOpacity`
   align-items: center;
   align-content: center;
   flex-direction: row;
-  border-radius: 3;
+  border-radius: 3px;
   height: 50;
 
   ${({ variant, color, clear, theme }: { variant: string; color: string; clear: boolean; theme: ITheme }) => {
@@ -31,14 +30,14 @@ const Container = styled.TouchableOpacity`
         return css`
           border-color: ${theme.colors.white};
           border-style: solid;
-          border-width: 1;
+          border-width: 1px;
         `
       }
 
       return css`
         border-color: ${theme.colors.neutral500};
         border-style: solid;
-        border-width: 1;
+        border-width: 1px;
       `
     }
 
@@ -65,17 +64,30 @@ const Container = styled.TouchableOpacity`
   }};
 `
 
-interface IProps extends ISpacing, TouchableOpacityProps {
+interface IProps extends ISpacing {
   title?: string
   variant?: 'contained' | 'outlined' | 'flat'
   color?: 'primary' | 'danger' | 'neutral'
   clear?: boolean
   loading?: boolean
   disabled?: boolean
+  style?: any
+  onPress: Function
 }
 
 const Button: React.FC<IProps> = props => {
-  const { children, title = '', variant = 'flat', color = 'primary', loading, disabled, margin, clear } = props
+  const {
+    children,
+    title = '',
+    variant = 'flat',
+    color = 'primary',
+    loading,
+    disabled,
+    margin,
+    clear = false,
+    style = {},
+    onPress
+  } = props
 
   let textColor
 
@@ -85,10 +97,16 @@ const Button: React.FC<IProps> = props => {
     textColor = variant === 'contained' ? `${color}700` : 'white'
   }
 
-  // const textColor: any = variant === 'contained' ? 'white' : `${color}700`
-
   return (
-    <Container {...props} color={color} disabled={loading || disabled} margin={margin} clear={clear}>
+    <Container
+      onPress={onPress}
+      style={style}
+      color={color}
+      disabled={loading || disabled}
+      margin={margin}
+      clear={clear}
+      variant={variant}
+    >
       {children || <Text text={title} fontWeight="bold" color={textColor} />}
     </Container>
   )
