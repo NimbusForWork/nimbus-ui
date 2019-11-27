@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styled, { css } from 'styled-components/native'
 
 import { IRounded, ISpacing } from '../utils'
@@ -52,7 +52,7 @@ interface IProps extends IRounded, ISpacing {
   height: number
 }
 
-const Image: React.FC<IProps> = ({ src, width, height, rounded, margin }) => {
+const Image: FC<IProps> = ({ src, width, height, rounded, margin }) => {
   return <Container source={src} width={width} height={height} rounded={rounded} margin={margin} />
 }
 
