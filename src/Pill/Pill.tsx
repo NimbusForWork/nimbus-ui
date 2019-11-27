@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styled, { css } from 'styled-components/native'
 
 import { Text, ITheme } from '../index'
@@ -24,7 +24,7 @@ interface IProps extends IColor {
   text: string
 }
 
-const Pill: React.FC<IProps> = ({ children, text, color = 'primary700' }) => {
+const Pill: FC<IProps> = ({ children, text, color = 'primary700' }) => {
   return <Container color={color}>{children || <Text text={text} color="white" fontWeight="bold" />}</Container>
 }
 

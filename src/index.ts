@@ -1,9 +1,3 @@
-// import { Card } from './Card'
-// import { Tag } from './Tag'
-// import theme, { ITheme } from './theme'
-// import { IColor, IFontWeight, ITextSize } from './utils'
-// export { Card, Button, Image, ListItem, Tag, Text, theme, ITheme, IColor, IFontWeight, ITextSize, FontFamily }
-
 import { Button } from './Button'
 import { Image } from './Image'
 import { Pill } from './Pill'

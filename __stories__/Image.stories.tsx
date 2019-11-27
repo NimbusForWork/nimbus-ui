@@ -1,39 +1,75 @@
-// import React from 'react'
-// import { storiesOf } from '@storybook/react'
-// import { withKnobs, number, text, boolean } from '@storybook/addon-knobs'
+import React from 'react'
+import { withKnobs, text, number, select } from '@storybook/addon-knobs'
 
-// import { Image } from '../src'
+import { Image } from '../src'
 
-// const stories = storiesOf('Components', module)
-// stories.addDecorator(withKnobs)
+export default { title: 'Image', component: Image, decorators: [withKnobs] }
 
-// stories.add('Image', () => {
-//   const uri = text(
-//     'Source',
-//     'https://cdn.cjr.org/wp-content/uploads/2019/07/AdobeStock_100000042-e1563305717660-686x371.jpeg'
-//   )
-//   const width = number('Width', 100)
-//   const height = number('Height', 100)
-//   const rounded = boolean('Rounded', false)
-//   const borderRadius = number('Border Radius', 5)
-//   const margin = number('Margin', 0)
-//   const marginTop = number('Margin Top', 0)
-//   const marginBottom = number('Margin Bottom', 0)
-//   const marginLeft = number('Margin Left', 0)
-//   const marginRight = number('Margin Right', 0)
+export const Default = () => {
+  const uri = text(
+    'Source',
+    'https://cdn.cjr.org/wp-content/uploads/2019/07/AdobeStock_100000042-e1563305717660-686x371.jpeg'
+  )
 
-//   return (
-//     <Image
-//       src={{ uri }}
-//       width={width}
-//       height={height}
-//       rounded={rounded}
-//       borderRadius={borderRadius}
-//       margin={margin}
-//       marginTop={marginTop}
-//       marginBottom={marginBottom}
-//       marginLeft={marginLeft}
-//       marginRight={marginRight}
-//     />
-//   )
-// })
+  const width = number('Width', 100)
+  const height = number('Height', 100)
+
+  return <Image src={{ uri }} width={width} height={height} />
+}
+
+export const withRounded = () => {
+  const uri = text(
+    'Source',
+    'https://cdn.cjr.org/wp-content/uploads/2019/07/AdobeStock_100000042-e1563305717660-686x371.jpeg'
+  )
+
+  const width = number('Width', 100)
+  const height = number('Height', 100)
+
+  const optsRounded = {
+    SM: 'sm',
+    MD: 'md',
+    LG: 'lg',
+    XL: 'xl',
+    '2XL': '2xl',
+    Full: 'full'
+  }
+  const rounded: any = select('Sizes', optsRounded, '2xl')
+
+  return <Image src={{ uri }} width={width} height={height} rounded={rounded} />
+}
+
+export const withRoundedFull = () => {
+  const uri = text(
+    'Source',
+    'https://cdn.cjr.org/wp-content/uploads/2019/07/AdobeStock_100000042-e1563305717660-686x371.jpeg'
+  )
+
+  const width = number('Width', 100)
+  const height = number('Height', 100)
+
+  return <Image src={{ uri }} width={width} height={height} rounded="full" />
+}
+
+export const withMargin = () => {
+  const uri = text(
+    'Source',
+    'https://cdn.cjr.org/wp-content/uploads/2019/07/AdobeStock_100000042-e1563305717660-686x371.jpeg'
+  )
+
+  const width = number('Width', 100)
+  const height = number('Height', 100)
+
+  const optsMargin = {
+    None: 'none',
+    SM: 'sm',
+    Base: 'base',
+    MD: 'md',
+    LG: 'lg',
+    XL: 'xl',
+    '2XL': '2xl'
+  }
+  const margin: any = select('Margin', optsMargin, '2xl')
+
+  return <Image src={{ uri }} width={width} height={height} margin={margin} />
+}

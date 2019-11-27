@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styled, { css } from 'styled-components/native'
 
 import { Text, ITheme } from '../index'
@@ -75,7 +75,7 @@ interface IProps extends ISpacing {
   onPress: Function
 }
 
-const Button: React.FC<IProps> = props => {
+const Button: FC<IProps> = props => {
   const {
     children,
     title = '',

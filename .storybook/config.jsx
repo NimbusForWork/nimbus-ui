@@ -7,10 +7,6 @@ import theme from '../src/theme'
 
 const req = require.context('../__stories__', true, /\.stories\.(tsx|mdx)$/)
 
-const loadStories = () => {
-  req.keys().forEach(req)
-}
-
 const Root = styled.View`
   padding: 15px;
 `
@@ -32,4 +28,4 @@ addParameters({
 
 addDecorator(GlobalStyle)
 
-configure(loadStories, module)
+configure(req, module)

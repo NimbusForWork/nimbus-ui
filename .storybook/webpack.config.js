@@ -2,12 +2,24 @@ const createCompiler = require('@storybook/addon-docs/mdx-compiler-plugin')
 
 module.exports = ({ config, mode }) => {
   config.module.rules.push({
-    test: /\.(stories)\.mdx?$/,
+    test: /\.(ts|tsx)$/,
     use: [
       {
-        loader: require.resolve('babel-loader'),
-        options: {
-          presets: [['react-app', { flow: false, typescript: true }]]
+        loader: require.resolve('awesome-typescript-loader')
+      },
+      {
+        loader: require.resolve('react-docgen-typescript-loader')
+      }
+    ]
+  })
+
+  config.module.rules.push({
+    test: /\.stories\.mdx$/,
+    use: [
+      {
+        loader: 'babel-loader',
+        query: {
+          plugins: ['@babel/plugin-transform-react-jsx']
         }
       },
       {
@@ -20,36 +32,10 @@ module.exports = ({ config, mode }) => {
   })
 
   config.module.rules.push({
-    test: /\.(ts|tsx)$/,
-    loaders: [
-      {
-        loader: require.resolve('@storybook/source-loader'),
-        options: {
-          parser: 'typescript',
-          prettierConfig: {
-            semi: true,
-            singleQuote: true,
-            jsxSingleQuote: false,
-            useTabs: false,
-            tabWidth: 2,
-            trailingComma: 'all',
-            printWidth: 80,
-            arrowParens: 'always'
-          }
-        }
-      }
-    ],
+    test: /\.(stories|story)\.[tj]sx?$/,
+    loader: require.resolve('@storybook/source-loader'),
     exclude: [/node_modules/],
     enforce: 'pre'
-  })
-
-  config.module.rules.push({
-    test: /\.(ts|tsx)$/,
-    loader: require.resolve('babel-loader'),
-
-    options: {
-      presets: [['react-app', { flow: false, typescript: true }]]
-    }
   })
 
   config.resolve.extensions.push('.ts', '.tsx')

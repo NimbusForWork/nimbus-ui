@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styled, { css } from 'styled-components/native'
 
 import { Text, ITheme } from '../index'
@@ -32,7 +32,7 @@ interface IProps {
   avatar?: Function
 }
 
-const ListItem: React.FC<IProps> = ({ title = '', subtitle = '', avatar, bottomDivider, children }) => {
+const Row: FC<IProps> = ({ title = '', subtitle = '', avatar, bottomDivider, children }) => {
   return (
     <Container bottomDivider={bottomDivider}>
       {children || (
@@ -48,4 +48,4 @@ const ListItem: React.FC<IProps> = ({ title = '', subtitle = '', avatar, bottomD
   )
 }
 
-export default ListItem
+export default Row

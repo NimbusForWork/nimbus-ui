@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { TextProps } from 'react-native'
 import styled, { css } from 'styled-components/native'
 
@@ -34,7 +34,7 @@ interface IProps extends IColor, ITextSize, ISpacing, IFontWeight, TextProps {
   text: string
 }
 
-const Text: React.FC<IProps> = ({ color = 'neutral700', text, size = 'base', margin, fontWeight = 'base' }) => {
+const Text: FC<IProps> = ({ color = 'neutral700', text, size = 'base', margin, fontWeight = 'base' }) => {
   return (
     <Container color={color} size={size} margin={margin} fontWeight={fontWeight}>
       {text}

@@ -1,15 +1,11 @@
 import React from 'react'
-import { storiesOf } from '@storybook/react'
 import { withKnobs, text, select, boolean } from '@storybook/addon-knobs'
-import { ThemeProvider } from 'styled-components/native'
 
-import { Button, theme } from '../src'
+import { Button } from '../src'
 
-const stories = storiesOf('Components', module)
+export default { title: 'Button', component: Button, decorators: [withKnobs] }
 
-stories.addDecorator(withKnobs)
-
-stories.add('Button', () => {
+export const Default = () => {
   const title = text('Title', 'Click Me')
 
   const optsMargin = {
@@ -36,8 +32,13 @@ stories.add('Button', () => {
   const clear = boolean('Clear Button', false)
 
   return (
-    <ThemeProvider theme={theme}>
-      <Button title={title} variant={variant} clear={clear} color={color} margin={margin} />
-    </ThemeProvider>
+    <Button
+      title={title}
+      variant={variant}
+      clear={clear}
+      color={color}
+      margin={margin}
+      onPress={() => alert('Button clicked')}
+    />
   )
-})
+}
