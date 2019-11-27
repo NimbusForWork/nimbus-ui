@@ -1,6 +1,7 @@
 # Nimbus Kiosk
 
 UI components for React Native and React Native Web, built with Typescript
+Documentation: https://nimbus-ui.netlify.com/
 
 # Expo App
 
@@ -38,6 +39,15 @@ render() {
 {
   "presets": ["next/babel"],
   "plugins": [["react-native-web", { "commonjs": true }]]
+}
+```
+
+app.json
+
+```
+{
+  "name": "with-react-native-web",
+  "displayName": "with-react-native-web"
 }
 ```
 
