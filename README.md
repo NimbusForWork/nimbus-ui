@@ -44,15 +44,30 @@ render() {
 next.config.js
 
 ```sh
-const withTM = require('next-transpile-modules')
+const path = require('path')
 
-module.exports = withTM({
-  transpileModules: [
-    'react-native',
-    'styled-components',
-    'styled-components/native'
-  ],
+const withTM = require('next-transpile-modules')
+const withFonts = require('next-fonts')
+const withCSS = require('@zeit/next-css')
+
+const nextConf = {
+  env: {
+    API_PATH: process.env.API_PATH,
+    API_KEY: process.env.API_KEY
+  },
+  transpileModules: ['react-native', 'styled-components', 'styled-components/native', '@nimbusforwork/nimbus-ui'],
   webpack: config => {
+    config.module.rules.push({
+      test: /\.ttf$/,
+      loader: 'url-loader',
+      include: path.resolve(__dirname, 'node_modules/react-native-vector-icons')
+    })
+
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack']
+    })
+
     return {
       ...config,
       resolve: {
@@ -74,7 +89,41 @@ module.exports = withTM({
         }
       }
     }
-  }
-})
+  },
+  cssModules: true
+}
 
+module.exports = withTM(withFonts(withCSS(nextConf)))
+
+```
+
+Default fontFamily in nimbus-ui theme
+
+```
+theme.fontFamily = 'body'
+```
+
+fonts type
+
+```
+body_base: Inter-Regular
+body_bold: Inter-Bold
+body_medium: Inter-Medium
+```
+
+Custom fonts
+
+```
+@font-face {
+  font-family: 'body_base';
+  src: url('./fonts/Inter-Regular.ttf');
+}
+@font-face {
+  font-family: 'body_bold';
+  src: url('./fonts/Inter-Bold.ttf');
+}
+@font-face {
+  font-family: 'body_medium';
+  src: url('./fonts/Inter-Medium.ttf');
+}
 ```
