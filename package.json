@@ -1,6 +1,6 @@
 {
   "name": "@nimbusforwork/nimbus-ui",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Nimbus UI Components",
   "main": "build/index.js",
   "module": "build/index.es.js",
