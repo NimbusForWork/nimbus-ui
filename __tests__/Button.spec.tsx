@@ -9,7 +9,7 @@ import theme from '../src/theme'
 test('Button should render', () => {
   const component = create(
     <ThemeProvider theme={theme}>
-      <Button title="Click Me" />
+      <Button title="Click Me" onPress={() => console.log('Button clicked')} />
     </ThemeProvider>
   )
 

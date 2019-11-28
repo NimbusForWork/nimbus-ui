@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { TextProps } from 'react-native'
 import styled, { css } from 'styled-components/native'
 
 import { IFontWeight, IColor, ITextSize, ISpacing } from '../utils'
@@ -30,7 +29,7 @@ const Container = styled.Text`
   }};
 `
 
-interface IProps extends IColor, ITextSize, ISpacing, IFontWeight, TextProps {
+interface IProps extends IColor, ITextSize, ISpacing, IFontWeight {
   text: string
 }
 

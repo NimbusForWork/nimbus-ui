@@ -1,0 +1,23 @@
+@font-face {
+  font-family: 'body_base';
+  src: url('./fonts/Inter-Regular.ttf');
+}
+@font-face {
+  font-family: 'body_bold';
+  src: url('./fonts/Inter-Bold.ttf');
+}
+@font-face {
+  font-family: 'body_medium';
+  src: url('./fonts/Inter-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Feather';
+  src: url('./fonts/Feather.ttf');
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}

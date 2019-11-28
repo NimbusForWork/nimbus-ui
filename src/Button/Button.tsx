@@ -66,7 +66,7 @@ const Container = styled.TouchableOpacity`
 
 interface IProps extends ISpacing {
   title?: string
-  variant?: 'contained' | 'outlined' | 'flat'
+  variant?: 'contained' | 'outlined'
   color?: 'primary' | 'danger' | 'neutral'
   clear?: boolean
   loading?: boolean
