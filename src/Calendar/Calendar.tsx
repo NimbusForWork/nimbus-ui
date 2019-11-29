@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react'
 import styled, { css } from 'styled-components/native'
 import { Animated, Dimensions } from 'react-native-web'
-import { getYear, getMonth, startOfWeek, addDays, format, compareAsc, isSameDay } from 'date-fns'
+import { getYear, getMonth, startOfWeek, addDays, format, compareAsc, isSameDay, setMonth } from 'date-fns'
 
 import { Button, Text, ITheme } from '../index'
 import { FeatherIcon } from '../FeatherIcon'
@@ -17,7 +17,7 @@ const Container = styled.View`
 
 const ModalContent = styled.View`
   z-index: 100;
-  width: 320;
+  width: 330;
   background: ${({ theme }: { theme: ITheme }) => theme.colors.white};
   border-radius: ${({ theme }: { theme: ITheme }) => theme.rounded.xl};
 `
@@ -83,7 +83,6 @@ const DateStyled = styled.View`
     active &&
     css`
       background: ${theme.colors.neutral700};
-      color: ${theme.colors.white};
       border-radius: 15;
       width: 30;
       height: 30;
@@ -95,12 +94,11 @@ const DateStyled = styled.View`
       width: 30;
       height: 30;
       background: ${theme.colors.primary700};
-      color: ${theme.colors.white};
       border-radius: 15;
     `}
 `
 
-const MonthContainer = styled(Item)`
+const CurrentMonth = styled(Item)`
   flex: 1;
   padding-left: ${40 / 3}px;
   align-items: flex-start;
@@ -114,6 +112,35 @@ const Footer = styled.View`
   border-top-color: ${({ theme }: { theme: ITheme }) => theme.colors.neutral300};
   border-bottom-left-radius: ${({ theme }: { theme: ITheme }) => theme.rounded.xl};
   border-bottom-right-radius: ${({ theme }: { theme: ITheme }) => theme.rounded.xl};
+`
+
+const MonthContainer = styled.View`
+  padding-left: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
+  padding-right: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
+  padding-top: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
+  padding-bottom: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
+`
+
+const MonthColumns = styled.View`
+  flex-wrap: wrap;
+  flex-direction: row;
+`
+
+const ItemMonth = styled.TouchableOpacity``
+
+const MonthStyled = styled.View`
+  width: 102;
+  height: 50;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+
+  ${({ active, theme }: { active: boolean; theme: ITheme }) =>
+    active &&
+    css`
+      background-color: ${theme.colors.neutral200};
+      border-radius: ${theme.rounded.lg};
+    `}
 `
 
 interface IProps {
@@ -131,10 +158,24 @@ const range = n => {
 
 const rows = range(6)
 const cols = range(7)
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+]
 
-const getMatrix = () => {
+const getMatrix = (selectedMonth: number) => {
   const year = getYear(new Date())
-  const month = getMonth(new Date())
+  const month = selectedMonth
 
   const matrix: any[] = []
   const date = new Date(year, month)
@@ -155,9 +196,13 @@ const getMatrix = () => {
 }
 
 const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSave }) => {
-  const matrix = getMatrix()
   const [fadeAnim] = useState(new Animated.Value(0))
-  const [itemSelected, setItemSelected] = useState()
+  const [isChooseMonth, setIsChooseMonth] = useState(false)
+
+  const [dateSelected, setDateSelected] = useState()
+  const [monthSelected, setMonthSelected] = useState(getMonth(new Date()))
+
+  const matrix = getMatrix(monthSelected)
 
   useEffect(() => {
     if (visible) {
@@ -222,7 +267,7 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
       return 'neutral400'
     }
 
-    if (isSameDay(new Date(), item) || isSameDay(itemSelected, item)) {
+    if (isSameDay(new Date(), item) || isSameDay(dateSelected, item)) {
       return 'white'
     }
 
@@ -230,57 +275,79 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
   }
 
   const disableButton = item => {
-    return getMonth(item) !== getMonth(new Date())
+    return getMonth(item) !== monthSelected
   }
 
   return visible ? (
     <Modal>
-      <CalendarStyled>
-        <Rows>
-          <Columns>
-            {matrix[0].map((item, idx) => {
-              return (
-                <Item disabled key={idx.toString()}>
-                  <Text text={format(item, 'EEEEE')} />
-                </Item>
-              )
-            })}
-          </Columns>
-        </Rows>
-
-        <Rows>
-          <Columns>
-            <MonthContainer>
-              <Text text={format(new Date(), 'MMMM yyyy')} fontWeight="bold" />
-            </MonthContainer>
-          </Columns>
-        </Rows>
-
-        {matrix.map((items, idx) => {
-          return (
-            <Rows key={idx.toString()}>
-              <Columns>
-                {items.map((item, idx1) => (
-                  <Item
-                    key={idx1.toString()}
-                    disabled={disableButton(item)}
-                    onPress={() => {
-                      setItemSelected(item)
-                      onPress(item)
-                    }}
-                  >
-                    {getMonth(item) === getMonth(new Date()) && (
-                      <DateStyled currentDate={isSameDay(new Date(), item)} active={isSameDay(itemSelected, item)}>
-                        <Text text={format(item, 'd')} color={setColor(item)} />
-                      </DateStyled>
-                    )}
+      {!isChooseMonth ? (
+        <CalendarStyled>
+          <Rows>
+            <Columns>
+              {matrix[0].map((item, idx) => {
+                return (
+                  <Item disabled key={idx.toString()}>
+                    <Text text={format(item, 'EEEEE')} />
                   </Item>
-                ))}
-              </Columns>
-            </Rows>
-          )
-        })}
-      </CalendarStyled>
+                )
+              })}
+            </Columns>
+          </Rows>
+
+          <Rows>
+            <Columns>
+              <CurrentMonth onPress={() => setIsChooseMonth(true)}>
+                <Text text={format(setMonth(new Date(), monthSelected), 'MMMM yyyy')} fontWeight="bold" />
+              </CurrentMonth>
+            </Columns>
+          </Rows>
+
+          {matrix.map((items, idx) => {
+            return (
+              <Rows key={idx.toString()}>
+                <Columns>
+                  {items.map((item, idx1) => (
+                    <Item
+                      key={idx1.toString()}
+                      disabled={disableButton(item)}
+                      onPress={() => {
+                        setDateSelected(item)
+                        onPress(item)
+                      }}
+                    >
+                      {getMonth(item) === monthSelected && (
+                        <DateStyled currentDate={isSameDay(new Date(), item)} active={isSameDay(dateSelected, item)}>
+                          <Text text={format(item, 'd')} color={setColor(item)} />
+                        </DateStyled>
+                      )}
+                    </Item>
+                  ))}
+                </Columns>
+              </Rows>
+            )
+          })}
+        </CalendarStyled>
+      ) : (
+        <MonthContainer>
+          <Rows>
+            <MonthColumns>
+              {months.map((month, idx) => (
+                <ItemMonth
+                  key={idx.toString()}
+                  onPress={() => {
+                    setMonthSelected(idx)
+                    setIsChooseMonth(false)
+                  }}
+                >
+                  <MonthStyled active={idx === monthSelected}>
+                    <Text text={month} />
+                  </MonthStyled>
+                </ItemMonth>
+              ))}
+            </MonthColumns>
+          </Rows>
+        </MonthContainer>
+      )}
     </Modal>
   ) : null
 }
