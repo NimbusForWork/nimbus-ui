@@ -1,3 +1,4 @@
+const path = require('path')
 const createCompiler = require('@storybook/addon-docs/mdx-compiler-plugin')
 
 module.exports = ({ config, mode }) => {
@@ -38,7 +39,19 @@ module.exports = ({ config, mode }) => {
     enforce: 'pre'
   })
 
-  config.resolve.extensions.push('.ts', '.tsx')
+  config.module.rules.push({
+    test: /\.ttf$/,
+    loader: 'file-loader',
+    include: path.resolve(__dirname, '../', 'node_modules/react-native-vector-icons')
+  })
+
+  config.module.rules.push({
+    test: /\.(ttf)$/,
+    loader: 'url-loader',
+    include: path.resolve(__dirname, '../', 'node_modules/react-native-vector-icons')
+  })
+
+  config.resolve.extensions.push('.web.ts', '.web.tsx', '.ts', '.tsx', '.web.js', '.web.jsx', '.js', '.jsx')
   config.resolve.alias = {
     'react-native$': require.resolve('react-native-web')
   }

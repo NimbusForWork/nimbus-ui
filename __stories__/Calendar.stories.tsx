@@ -6,7 +6,7 @@ import { Calendar } from '../src'
 export default { title: 'Calendar', component: Calendar, decorators: [withKnobs] }
 
 export const Default = () => {
-  const visible = boolean('Visible', true)
+  const visible = boolean('Visible', false)
 
   return (
     <Calendar

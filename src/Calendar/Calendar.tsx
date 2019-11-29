@@ -1,9 +1,10 @@
 import React, { FC, useState, useEffect } from 'react'
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 import { Animated, Dimensions } from 'react-native-web'
 import { getYear, getMonth, startOfWeek, addDays, format, compareAsc, isSameDay } from 'date-fns'
 
 import { Button, Text, ITheme } from '../index'
+import { FeatherIcon } from '../FeatherIcon'
 
 const Container = styled.View`
   justify-content: center;
@@ -30,13 +31,13 @@ const Header = styled.View`
 `
 const ButtonWrap = styled.View`
   flex: 1;
-  max-width: 40;
+  max-width: 50;
 `
 const Title = styled.View`
   flex: 1;
   justify-content: center;
   flex-direction: row;
-  margin-right: 40px;
+  margin-right: 50px;
 `
 
 const Overlay = styled.View`
@@ -71,6 +72,32 @@ const Item = styled.TouchableOpacity`
   align-content: center;
   align-items: center;
   justify-content: center;
+`
+
+const DateStyled = styled.View`
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+
+  ${({ active, theme }: { active: boolean; theme: ITheme }) =>
+    active &&
+    css`
+      background: ${theme.colors.neutral700};
+      color: ${theme.colors.white};
+      border-radius: 15;
+      width: 30;
+      height: 30;
+    `}
+
+  ${({ currentDate, theme }: { currentDate: boolean; theme: ITheme }) =>
+    currentDate &&
+    css`
+      width: 30;
+      height: 30;
+      background: ${theme.colors.primary700};
+      color: ${theme.colors.white};
+      border-radius: 15;
+    `}
 `
 
 const MonthContainer = styled(Item)`
@@ -130,6 +157,7 @@ const getMatrix = () => {
 const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSave }) => {
   const matrix = getMatrix()
   const [fadeAnim] = useState(new Animated.Value(0))
+  const [itemSelected, setItemSelected] = useState()
 
   useEffect(() => {
     if (visible) {
@@ -152,7 +180,9 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
           <ModalContent>
             <Header>
               <ButtonWrap>
-                <Button onPress={() => onClose()} title="x" />
+                <Button onPress={() => onClose()}>
+                  <FeatherIcon name="x" size="xl" />
+                </Button>
               </ButtonWrap>
               <Title>
                 <Text text={title} />
@@ -187,14 +217,30 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
     )
   }
 
+  const setColor = item => {
+    if (!isSameDay(new Date(item), new Date()) && compareAsc(item, new Date()) === -1) {
+      return 'neutral400'
+    }
+
+    if (isSameDay(new Date(), item) || isSameDay(itemSelected, item)) {
+      return 'white'
+    }
+
+    return 'neutral700'
+  }
+
+  const disableButton = item => {
+    return getMonth(item) !== getMonth(new Date())
+  }
+
   return visible ? (
     <Modal>
       <CalendarStyled>
         <Rows>
           <Columns>
-            {matrix[0].map(item => {
+            {matrix[0].map((item, idx) => {
               return (
-                <Item key={item}>
+                <Item disabled key={idx.toString()}>
                   <Text text={format(item, 'EEEEE')} />
                 </Item>
               )
@@ -205,26 +251,28 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
         <Rows>
           <Columns>
             <MonthContainer>
-              <Text text="November 2019" fontWeight="bold" />
+              <Text text={format(new Date(), 'MMMM yyyy')} fontWeight="bold" />
             </MonthContainer>
           </Columns>
         </Rows>
 
-        {matrix.map(items => {
+        {matrix.map((items, idx) => {
           return (
-            <Rows key={items}>
+            <Rows key={idx.toString()}>
               <Columns>
-                {items.map(item => (
-                  <Item key={item} disabled onPress={() => onPress(item)}>
+                {items.map((item, idx1) => (
+                  <Item
+                    key={idx1.toString()}
+                    disabled={disableButton(item)}
+                    onPress={() => {
+                      setItemSelected(item)
+                      onPress(item)
+                    }}
+                  >
                     {getMonth(item) === getMonth(new Date()) && (
-                      <Text
-                        text={format(item, 'd')}
-                        color={
-                          !isSameDay(new Date(item), new Date()) && compareAsc(item, new Date()) === -1
-                            ? 'neutral400'
-                            : 'neutral700'
-                        }
-                      />
+                      <DateStyled currentDate={isSameDay(new Date(), item)} active={isSameDay(itemSelected, item)}>
+                        <Text text={format(item, 'd')} color={setColor(item)} />
+                      </DateStyled>
                     )}
                   </Item>
                 ))}
