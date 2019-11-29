@@ -27,7 +27,7 @@ export default {
     external(),
     resolve({
       customResolveOptions: {
-        moduleDirectory: 'js_modules'
+        moduleDirectory: 'react-native'
       }
     }),
     json(),

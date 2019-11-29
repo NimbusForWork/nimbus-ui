@@ -39,10 +39,25 @@ module.exports = ({ config, mode }) => {
     enforce: 'pre'
   })
 
+  // config.module.rules.push({
+  //   test: /\.ttf$/,
+  //   loader: 'file-loader',
+  //   include: path.resolve(__dirname, '../', 'node_modules/react-native-vector-icons')
+  // })
+
   config.module.rules.push({
-    test: /\.ttf$/,
-    loader: 'file-loader',
-    include: path.resolve(__dirname, '../', 'node_modules/react-native-vector-icons')
+    test: /\.(js|jsx)$/,
+    include: path.resolve(__dirname, '../', 'node_modules/react-native-vector-icons'),
+    loader: require.resolve('babel-loader'),
+    options: {
+      presets: [
+        '@babel/preset-env',
+        '@babel/preset-react',
+        {
+          plugins: ['@babel/plugin-proposal-class-properties']
+        }
+      ]
+    }
   })
 
   config.module.rules.push({
