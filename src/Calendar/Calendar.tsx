@@ -3,8 +3,12 @@ import styled, { css } from 'styled-components/native'
 import { Animated, Dimensions } from 'react-native-web'
 import { getYear, getMonth, startOfWeek, addDays, format, compareAsc, isSameDay, setMonth } from 'date-fns'
 
+import { setYear } from 'date-fns/esm'
+
 import { Button, Text, ITheme } from '../index'
 import { FeatherIcon } from '../FeatherIcon'
+
+import CalendarMonth from './CalendarMonth'
 
 const Container = styled.View`
   justify-content: center;
@@ -114,35 +118,6 @@ const Footer = styled.View`
   border-bottom-right-radius: ${({ theme }: { theme: ITheme }) => theme.rounded.xl};
 `
 
-const MonthContainer = styled.View`
-  padding-left: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
-  padding-right: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
-  padding-top: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
-  padding-bottom: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
-`
-
-const MonthColumns = styled.View`
-  flex-wrap: wrap;
-  flex-direction: row;
-`
-
-const ItemMonth = styled.TouchableOpacity``
-
-const MonthStyled = styled.View`
-  width: 102;
-  height: 50;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-
-  ${({ active, theme }: { active: boolean; theme: ITheme }) =>
-    active &&
-    css`
-      background-color: ${theme.colors.neutral200};
-      border-radius: ${theme.rounded.lg};
-    `}
-`
-
 interface IProps {
   onPress: Function
   onClose: Function
@@ -158,20 +133,6 @@ const range = n => {
 
 const rows = range(6)
 const cols = range(7)
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-]
 
 const getMatrix = (selectedMonth: number) => {
   const year = getYear(new Date())
@@ -201,6 +162,7 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
 
   const [dateSelected, setDateSelected] = useState()
   const [monthSelected, setMonthSelected] = useState(getMonth(new Date()))
+  const [yearSelected, setYearSelected] = useState(getYear(new Date()))
 
   const matrix = getMatrix(monthSelected)
 
@@ -241,7 +203,7 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
                 clear
                 style={{ flex: 1 }}
                 margin={{ right: 'lg' }}
-                title="Clear"
+                title="Cancel"
                 variant="contained"
                 color="neutral"
                 onPress={() => onClear && onClear()}
@@ -249,7 +211,7 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
               <Button
                 style={{ flex: 1 }}
                 variant="contained"
-                title="Save"
+                title="Select"
                 color="neutral"
                 onPress={() => onSave && onSave()}
               />
@@ -278,6 +240,12 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
     return getMonth(item) !== monthSelected
   }
 
+  const setSelectedDate = () => {
+    let date = setMonth(new Date(), monthSelected)
+    date = setYear(date, yearSelected)
+    return date
+  }
+
   return visible ? (
     <Modal>
       {!isChooseMonth ? (
@@ -297,7 +265,7 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
           <Rows>
             <Columns>
               <CurrentMonth onPress={() => setIsChooseMonth(true)}>
-                <Text text={format(setMonth(new Date(), monthSelected), 'MMMM yyyy')} fontWeight="bold" />
+                <Text text={format(setSelectedDate(), 'MMMM yyyy')} fontWeight="bold" />
               </CurrentMonth>
             </Columns>
           </Rows>
@@ -328,25 +296,15 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
           })}
         </CalendarStyled>
       ) : (
-        <MonthContainer>
-          <Rows>
-            <MonthColumns>
-              {months.map((month, idx) => (
-                <ItemMonth
-                  key={idx.toString()}
-                  onPress={() => {
-                    setMonthSelected(idx)
-                    setIsChooseMonth(false)
-                  }}
-                >
-                  <MonthStyled active={idx === monthSelected}>
-                    <Text text={month} />
-                  </MonthStyled>
-                </ItemMonth>
-              ))}
-            </MonthColumns>
-          </Rows>
-        </MonthContainer>
+        <CalendarMonth
+          monthSelected={monthSelected}
+          year={yearSelected}
+          onSelectMonth={(m, y) => {
+            setMonthSelected(m)
+            setYearSelected(y)
+            setIsChooseMonth(false)
+          }}
+        />
       )}
     </Modal>
   ) : null
