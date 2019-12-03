@@ -23,6 +23,8 @@ const Container = styled.View`
 
 const Content = styled.View`
   flex-direction: column;
+  flex-wrap: wrap;
+  flex: 1;
 `
 
 interface IProps {
