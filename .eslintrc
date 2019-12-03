@@ -29,10 +29,7 @@
     "prettier/prettier": "error",
     "react/prop-types": 0,
     "react/jsx-props-no-spreading": 0,
-    "react/jsx-filename-extension": [
-      1,
-      { "extensions": [".js", ".ts", "tsx"] }
-    ],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".ts", "tsx"] }],
     "react/display-name": 0,
 
     "@typescript-eslint/no-unused-vars": 2,
@@ -43,6 +40,7 @@
     "semi": 0,
     "consistent-return": 0,
     "no-console": ["error", { "allow": ["log", "warn", "error"] }],
+    "no-shadow": ["warn"],
 
     "import/prefer-default-export": 0,
     "import/order": [1, { "newlines-between": "always-and-inside-groups" }],

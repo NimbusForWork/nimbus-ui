@@ -1,16 +1,12 @@
 import React, { FC, useState, useEffect } from 'react'
 import styled, { css } from 'styled-components/native'
-import { Animated, Dimensions } from 'react-native-web'
-import { getYear, getMonth, startOfWeek, addDays, format, compareAsc, isSameDay, setMonth } from 'date-fns'
+import { Animated, Dimensions, TouchableOpacity, FlatList } from 'react-native-web'
+import { startOfWeek, addDays, getMonth, getYear, format, isSameDay, compareAsc, setMonth, setYear } from 'date-fns'
 
-import { setYear } from 'date-fns/esm'
+import { ITheme, Button, FeatherIcon } from '../index'
+import { Text } from '../Text'
 
-import { Button, Text, ITheme } from '../index'
-import { FeatherIcon } from '../FeatherIcon'
-
-import CalendarMonth from './CalendarMonth'
-
-const Container = styled.View`
+const Box = styled.View`
   justify-content: center;
   align-items: center;
   align-content: center;
@@ -44,6 +40,16 @@ const Title = styled.View`
   margin-right: 50px;
 `
 
+const Footer = styled.View`
+  flex-direction: row;
+  background-color: ${({ theme }: { theme: ITheme }) => theme.colors.white};
+  padding: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']}px;
+  border-top-width: 1;
+  border-top-color: ${({ theme }: { theme: ITheme }) => theme.colors.neutral300};
+  border-bottom-left-radius: ${({ theme }: { theme: ITheme }) => theme.rounded.xl};
+  border-bottom-right-radius: ${({ theme }: { theme: ITheme }) => theme.rounded.xl};
+`
+
 const Overlay = styled.View`
   background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
@@ -55,7 +61,9 @@ const Overlay = styled.View`
   z-index: 99;
 `
 
-const CalendarStyled = styled.View`
+const ContentBox = styled.View`
+  padding-top: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
+  padding-bottom: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
   padding-left: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
   padding-right: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
 `
@@ -70,12 +78,18 @@ const Columns = styled.View`
   justify-content: space-between;
 `
 
-const Item = styled.TouchableOpacity`
+const DateItem = styled.TouchableOpacity`
   height: 40;
   width: 40;
   align-content: center;
   align-items: center;
   justify-content: center;
+`
+
+const CurrentMonth = styled(DateItem)`
+  flex: 1;
+  padding-left: ${40 / 3}px;
+  align-items: flex-start;
 `
 
 const DateStyled = styled.View`
@@ -102,29 +116,14 @@ const DateStyled = styled.View`
     `}
 `
 
-const CurrentMonth = styled(Item)`
-  flex: 1;
-  padding-left: ${40 / 3}px;
-  align-items: flex-start;
-`
-
-const Footer = styled.View`
-  flex-direction: row;
-  background-color: ${({ theme }: { theme: ITheme }) => theme.colors.white};
-  padding: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']}px;
-  border-top-width: 1;
-  border-top-color: ${({ theme }: { theme: ITheme }) => theme.colors.neutral300};
-  border-bottom-left-radius: ${({ theme }: { theme: ITheme }) => theme.rounded.xl};
-  border-bottom-right-radius: ${({ theme }: { theme: ITheme }) => theme.rounded.xl};
-`
-
 interface IProps {
-  onPress: Function
-  onClose: Function
-  onSave?: Function
-  onClear?: Function
+  value: Date
   title: string
   visible: boolean
+  onPress: Function
+  onClose: Function
+  onSelect?: Function
+  onCancel?: Function
 }
 
 const range = n => {
@@ -134,10 +133,7 @@ const range = n => {
 const rows = range(6)
 const cols = range(7)
 
-const getMatrix = (selectedMonth: number) => {
-  const year = getYear(new Date())
-  const month = selectedMonth
-
+const getMatrix = (month: number, year: number) => {
   const matrix: any[] = []
   const date = new Date(year, month)
 
@@ -156,15 +152,214 @@ const getMatrix = (selectedMonth: number) => {
   return matrix
 }
 
-const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSave }) => {
+const DateList = ({
+  data,
+  month,
+  currentDate,
+  onSelectDate,
+  setShowMonth
+}: {
+  data: Array<Array<Date>>
+  month: number
+  currentDate: Date
+  onSelectDate: Function
+  setShowMonth: Function
+}) => {
+  const setColor = item => {
+    if (!isSameDay(new Date(item), new Date()) && compareAsc(item, new Date()) === -1) {
+      return 'neutral400'
+    }
+
+    if (isSameDay(new Date(), item) || isSameDay(currentDate, item)) {
+      return 'white'
+    }
+
+    return 'neutral700'
+  }
+
+  return (
+    <>
+      <Rows>
+        <Columns>
+          {data[0].map((item, idx) => (
+            <DateItem disabled key={idx.toString()}>
+              <Text text={format(item, 'EEEEE')} />
+            </DateItem>
+          ))}
+        </Columns>
+      </Rows>
+
+      <Rows>
+        <Columns>
+          <CurrentMonth onPress={() => setShowMonth(true)}>
+            <Text text={format(currentDate, 'MMMM yyyy')} fontWeight="bold" />
+          </CurrentMonth>
+        </Columns>
+      </Rows>
+
+      {data.map((items, idx) => (
+        <Rows key={idx.toString()}>
+          <Columns>
+            {items.map((item, idx1) => (
+              <DateItem
+                key={idx1.toString()}
+                disabled={getMonth(item) !== month}
+                onPress={() => {
+                  onSelectDate(item)
+                }}
+              >
+                {getMonth(item) === month && (
+                  <DateStyled currentDate={isSameDay(new Date(), item)} active={isSameDay(currentDate, item)}>
+                    <Text text={format(item, 'd')} color={setColor(item)} />
+                  </DateStyled>
+                )}
+              </DateItem>
+            ))}
+          </Columns>
+        </Rows>
+      ))}
+    </>
+  )
+}
+
+const MonthStyled = styled.View`
+  width: 102;
+  height: 50;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+
+  ${({ active, theme }: { active: boolean; theme: ITheme }) =>
+    active &&
+    css`
+      background-color: ${theme.colors.neutral200};
+      border-radius: ${theme.rounded.lg};
+    `}
+`
+
+const MonthColumns = styled.View`
+  flex-wrap: wrap;
+  flex-direction: row;
+`
+
+const MonthList = ({
+  month,
+  year,
+  onSelectMonth,
+  setShowYear
+}: {
+  month: number
+  year: number
+  onSelectMonth: Function
+  setShowYear: Function
+}) => {
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ]
+
+  return (
+    <>
+      <Rows>
+        <Columns>
+          <CurrentMonth onPress={() => setShowYear(true)}>
+            <Text text={year.toString()} fontWeight="bold" margin={{ bottom: 'xl' }} />
+          </CurrentMonth>
+        </Columns>
+      </Rows>
+
+      <Rows>
+        <MonthColumns>
+          {months.map((item, idx) => (
+            <TouchableOpacity key={idx.toString()} onPress={() => onSelectMonth(idx)}>
+              <MonthStyled active={idx === month}>
+                <Text text={item} />
+              </MonthStyled>
+            </TouchableOpacity>
+          ))}
+        </MonthColumns>
+      </Rows>
+    </>
+  )
+}
+
+const YearStyled = styled.View`
+  width: ${282 / 3};
+  height: 50;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+
+  ${({ active, theme }: { active: boolean; theme: ITheme }) =>
+    active &&
+    css`
+      background-color: ${theme.colors.neutral200};
+      border-radius: ${theme.rounded.lg};
+    `}
+`
+
+const YearList = ({ year, onSelect }: { year: number; onSelect: Function }) => {
+  const data: Array<string> = []
+  for (let i = getYear(new Date()) - 5; i < getYear(new Date()) + 15; i += 1) {
+    data.push(i.toString())
+  }
+
+  const [years, setYears] = useState<Array<string>>(data)
+
+  const loadMore = () => {
+    const latest = Number(years[years.length - 1])
+    for (let i = latest; i < latest + 15; i += 1) {
+      years.push(i.toString())
+    }
+
+    setYears(years)
+  }
+
+  return (
+    <Rows>
+      <FlatList
+        style={{ maxHeight: 200 }}
+        numColumns={3}
+        contentContainerStyled={{ justifyContent: 'center' }}
+        data={years}
+        renderItem={({ item }: { item: number }) => (
+          //   <Item item={item} active={item === yearSelected.toString()} onSelect={onSelectYear} />
+          <TouchableOpacity style={{ flex: 1, justifyContent: 'center' }} onPress={() => onSelect(item)}>
+            <YearStyled active={item === year}>
+              <Text text={item.toString()} />
+            </YearStyled>
+          </TouchableOpacity>
+        )}
+        onRefresh={() => console.log('refesh')}
+        refreshing
+        keyExtractor={item => item}
+        onEndReachedThreshold={0.1}
+        onEndReached={loadMore}
+      />
+    </Rows>
+  )
+}
+
+const Calendar: FC<IProps> = ({ value, title, visible, onClose, onSelect, onCancel, onPress }) => {
   const [fadeAnim] = useState(new Animated.Value(0))
-  const [isChooseMonth, setIsChooseMonth] = useState(false)
+  const [val, setVal] = useState(value)
+  const [showMonth, setShowMonth] = useState(false)
+  const [showYear, setShowYear] = useState(false)
 
-  const [dateSelected, setDateSelected] = useState()
-  const [monthSelected, setMonthSelected] = useState(getMonth(new Date()))
-  const [yearSelected, setYearSelected] = useState(getYear(new Date()))
+  const [selectedMonth, setSelectedMonth] = useState(getMonth(val))
+  const [selectedYear, setSelectedYear] = useState(getYear(val))
 
-  const matrix = getMatrix(monthSelected)
+  const matrix = getMatrix(selectedMonth, selectedYear)
 
   useEffect(() => {
     if (visible) {
@@ -180,133 +375,85 @@ const Calendar: FC<IProps> = ({ onPress, onClose, title, visible, onClear, onSav
     }
   }, [visible])
 
-  const Modal = ({ children }) => {
-    return (
-      <Animated.View style={{ opacity: fadeAnim }}>
-        <Container fadeAnim={fadeAnim}>
-          <ModalContent>
-            <Header>
-              <ButtonWrap>
-                <Button onPress={() => onClose()}>
-                  <FeatherIcon name="x" size="xl" />
-                </Button>
-              </ButtonWrap>
-              <Title>
-                <Text text={title} />
-              </Title>
-            </Header>
-
-            {children}
-
-            <Footer>
-              <Button
-                clear
-                style={{ flex: 1 }}
-                margin={{ right: 'lg' }}
-                title="Cancel"
-                variant="contained"
-                color="neutral"
-                onPress={() => onClear && onClear()}
-              />
-              <Button
-                style={{ flex: 1 }}
-                variant="contained"
-                title="Select"
-                color="neutral"
-                onPress={() => onSave && onSave()}
-              />
-            </Footer>
-          </ModalContent>
-
-          <Overlay />
-        </Container>
-      </Animated.View>
-    )
-  }
-
-  const setColor = item => {
-    if (!isSameDay(new Date(item), new Date()) && compareAsc(item, new Date()) === -1) {
-      return 'neutral400'
-    }
-
-    if (isSameDay(new Date(), item) || isSameDay(dateSelected, item)) {
-      return 'white'
-    }
-
-    return 'neutral700'
-  }
-
-  const disableButton = item => {
-    return getMonth(item) !== monthSelected
-  }
-
-  const setSelectedDate = () => {
-    let date = setMonth(new Date(), monthSelected)
-    date = setYear(date, yearSelected)
-    return date
-  }
-
   return visible ? (
-    <Modal>
-      {!isChooseMonth ? (
-        <CalendarStyled>
-          <Rows>
-            <Columns>
-              {matrix[0].map((item, idx) => {
-                return (
-                  <Item disabled key={idx.toString()}>
-                    <Text text={format(item, 'EEEEE')} />
-                  </Item>
-                )
-              })}
-            </Columns>
-          </Rows>
+    <Animated.View style={{ opacity: fadeAnim }}>
+      <Box fadeAnim={fadeAnim}>
+        <ModalContent>
+          <Header>
+            <ButtonWrap>
+              <Button onPress={() => onClose()}>
+                <FeatherIcon name="x" size="xl" />
+              </Button>
+            </ButtonWrap>
+            <Title>
+              <Text text={title} />
+            </Title>
+          </Header>
 
-          <Rows>
-            <Columns>
-              <CurrentMonth onPress={() => setIsChooseMonth(true)}>
-                <Text text={format(setSelectedDate(), 'MMMM yyyy')} fontWeight="bold" />
-              </CurrentMonth>
-            </Columns>
-          </Rows>
+          <ContentBox>
+            {!showMonth && !showYear && (
+              <DateList
+                data={matrix}
+                currentDate={val}
+                onSelectDate={date => {
+                  setVal(date)
+                  onPress(date)
+                }}
+                month={selectedMonth}
+                setShowMonth={val => setShowMonth(val)}
+              />
+            )}
 
-          {matrix.map((items, idx) => {
-            return (
-              <Rows key={idx.toString()}>
-                <Columns>
-                  {items.map((item, idx1) => (
-                    <Item
-                      key={idx1.toString()}
-                      disabled={disableButton(item)}
-                      onPress={() => {
-                        setDateSelected(item)
-                        onPress(item)
-                      }}
-                    >
-                      {getMonth(item) === monthSelected && (
-                        <DateStyled currentDate={isSameDay(new Date(), item)} active={isSameDay(dateSelected, item)}>
-                          <Text text={format(item, 'd')} color={setColor(item)} />
-                        </DateStyled>
-                      )}
-                    </Item>
-                  ))}
-                </Columns>
-              </Rows>
-            )
-          })}
-        </CalendarStyled>
-      ) : (
-        <CalendarMonth
-          monthSelected={monthSelected}
-          year={yearSelected}
-          onSelectMonth={(m, y) => {
-            setMonthSelected(m)
-            setYearSelected(y)
-            setIsChooseMonth(false)
-          }}
-        />
-      )}
-    </Modal>
+            {showMonth && !showYear && (
+              <MonthList
+                month={selectedMonth}
+                year={selectedYear}
+                setShowYear={val => setShowYear(val)}
+                onSelectMonth={m => {
+                  setSelectedMonth(m)
+                  setVal(setMonth(val, m))
+                  setShowMonth(false)
+                }}
+              />
+            )}
+
+            {showYear && (
+              <YearList
+                year={selectedYear}
+                onSelect={y => {
+                  setSelectedYear(y)
+                  setVal(setYear(val, y))
+                  setShowYear(false)
+                }}
+              />
+            )}
+          </ContentBox>
+
+          <Footer>
+            <Button
+              clear
+              style={{ flex: 1 }}
+              margin={{ right: 'lg' }}
+              title="Cancel"
+              variant="contained"
+              color="neutral"
+              onPress={() => onCancel && onCancel()}
+            />
+            <Button
+              style={{ flex: 1 }}
+              variant="contained"
+              title="Select"
+              color="neutral"
+              onPress={() => {
+                if (onSelect) onSelect(val)
+              }}
+            />
+          </Footer>
+        </ModalContent>
+
+        <Overlay />
+      </Box>
+    </Animated.View>
   ) : null
 }
 

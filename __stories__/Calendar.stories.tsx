@@ -10,10 +10,13 @@ export const Default = () => {
 
   return (
     <Calendar
+      value={new Date()}
       title="Check-in -- Checkout"
       visible={visible}
       onClose={() => alert('onClose Clicked')}
       onPress={item => alert(item)}
+      onSelect={value => alert(value)}
+      onCancel={() => alert('onCancel Clicked')}
     />
   )
 }
