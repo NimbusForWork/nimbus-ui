@@ -18,7 +18,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["react", "jest"],
+    "skipLibCheck": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "build"]
