@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react'
 import styled, { css } from 'styled-components/native'
-import { Animated, Dimensions, TouchableOpacity, FlatList } from 'react-native-web'
+import { Animated, Dimensions, FlatList } from 'react-native'
 import { startOfWeek, addDays, getMonth, getYear, format, isSameDay, compareAsc, setMonth, setYear } from 'date-fns'
 
 import { ITheme, Button, FeatherIcon } from '../index'
@@ -57,7 +57,10 @@ const Overlay = styled.View`
   right: 0;
   top: 0;
   bottom: 0;
-  margin: 0 auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
   z-index: 99;
 `
 
@@ -83,6 +86,13 @@ const DateItem = styled.TouchableOpacity`
   width: 40;
   align-content: center;
   align-items: center;
+  justify-content: center;
+`
+
+const MonthItem = styled.TouchableOpacity``
+
+const YearItem = styled.TouchableOpacity`
+  flex: 1;
   justify-content: center;
 `
 
@@ -281,11 +291,11 @@ const MonthList = ({
       <Rows>
         <MonthColumns>
           {months.map((item, idx) => (
-            <TouchableOpacity key={idx.toString()} onPress={() => onSelectMonth(idx)}>
+            <MonthItem key={idx.toString()} onPress={() => onSelectMonth(idx)}>
               <MonthStyled active={idx === month}>
                 <Text text={item} />
               </MonthStyled>
-            </TouchableOpacity>
+            </MonthItem>
           ))}
         </MonthColumns>
       </Rows>
@@ -330,19 +340,16 @@ const YearList = ({ year, onSelect }: { year: number; onSelect: Function }) => {
       <FlatList
         style={{ maxHeight: 200 }}
         numColumns={3}
-        contentContainerStyled={{ justifyContent: 'center' }}
+        // contentContainerStyled={{ justifyContent: 'center' }}
         data={years}
-        renderItem={({ item }: { item: number }) => (
-          //   <Item item={item} active={item === yearSelected.toString()} onSelect={onSelectYear} />
-          <TouchableOpacity style={{ flex: 1, justifyContent: 'center' }} onPress={() => onSelect(item)}>
-            <YearStyled active={item === year}>
+        renderItem={({ item }) => (
+          <YearItem onPress={() => onSelect(item)}>
+            <YearStyled active={Number(item) === year}>
               <Text text={item.toString()} />
             </YearStyled>
-          </TouchableOpacity>
+          </YearItem>
         )}
-        onRefresh={() => console.log('refesh')}
-        refreshing
-        keyExtractor={item => item}
+        keyExtractor={item => item.toString()}
         onEndReachedThreshold={0.1}
         onEndReached={loadMore}
       />
@@ -377,7 +384,7 @@ const Calendar: FC<IProps> = ({ value, title, visible, onClose, onSelect, onCanc
 
   return visible ? (
     <Animated.View style={{ opacity: fadeAnim }}>
-      <Box fadeAnim={fadeAnim}>
+      <Box>
         <ModalContent>
           <Header>
             <ButtonWrap>
