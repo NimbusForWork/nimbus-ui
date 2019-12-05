@@ -340,7 +340,6 @@ const YearList = ({ year, onSelect }: { year: number; onSelect: Function }) => {
       <FlatList
         style={{ maxHeight: 200 }}
         numColumns={3}
-        // contentContainerStyled={{ justifyContent: 'center' }}
         data={years}
         renderItem={({ item }) => (
           <YearItem onPress={() => onSelect(item)}>
@@ -438,11 +437,10 @@ const Calendar: FC<IProps> = ({ value, title, visible, onClose, onSelect, onCanc
 
           <Footer>
             <Button
-              clear
               style={{ flex: 1 }}
-              margin={{ right: 'lg' }}
+              margin={{ right: '2xl' }}
               title="Cancel"
-              variant="contained"
+              variant="outlined"
               color="neutral"
               onPress={() => onCancel && onCancel()}
             />
