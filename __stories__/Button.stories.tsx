@@ -30,6 +30,7 @@ export const Default = () => {
   const variant: any = select('Variant', optsVariant, 'contained')
 
   const clear = boolean('Clear Button', false)
+  const loading = boolean('Loading', false)
 
   return (
     <Button
@@ -38,6 +39,7 @@ export const Default = () => {
       clear={clear}
       color={color}
       margin={margin}
+      loading={loading}
       onPress={() => alert('Button clicked')}
     />
   )

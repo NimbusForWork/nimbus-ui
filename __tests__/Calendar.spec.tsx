@@ -10,6 +10,7 @@ test('Calendar should render', () => {
   const component = create(
     <ThemeProvider theme={theme}>
       <Calendar
+        value={new Date()}
         title="Check-in -- Checkout"
         visible={true}
         onClose={() => alert('onClose Clicked')}

@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components/native'
 
 import { Text, ITheme } from '../index'
 import { ISpacing } from '../utils'
+import { FeatherIcon } from '../FeatherIcon'
 
 const Container = styled.TouchableOpacity`
   justify-content: center;
@@ -35,7 +36,7 @@ const Container = styled.TouchableOpacity`
       }
 
       return css`
-        border-color: ${theme.colors.neutral500};
+        border-color: ${theme.colors[`${color}700`]};
         border-style: solid;
         border-width: 1px;
       `
@@ -107,7 +108,11 @@ const Button: FC<IProps> = props => {
       clear={clear}
       variant={variant}
     >
-      {children || <Text text={title} fontWeight="bold" color={textColor} />}
+      {loading ? (
+        <FeatherIcon name="loader" color={textColor} spin />
+      ) : (
+        children || <Text text={title} fontWeight="bold" color={textColor} />
+      )}
     </Container>
   )
 }
