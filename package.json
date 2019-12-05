@@ -36,7 +36,6 @@
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
     "babel-preset-react-app": "^9.0.2",
-    "date-fns": "^2.8.1",
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.0.0",
@@ -67,7 +66,6 @@
     "rollup-plugin-peer-deps-external": "^2.2.0",
     "rollup-plugin-typescript2": "^0.24.3",
     "rollup-plugin-url": "^3.0.0",
-    "styled-components": "^4.4.1",
     "ts-jest": "^24.1.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.6.4",
@@ -121,5 +119,8 @@
       "git add"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "date-fns": "^2.8.1",
+    "styled-components": "^4.4.1"
+  }
 }
