@@ -1,5 +1,6 @@
 import { Button } from './Button'
 import { Calendar } from './Calendar'
+import { CheckBox } from './CheckBox'
 import { Image } from './Image'
 import { FeatherIcon } from './FeatherIcon'
 import { Pill } from './Pill'
@@ -11,11 +12,12 @@ import FontFamily from './fonts'
 import baseColor, { IBaseColor } from './color'
 import theme, { ITheme } from './theme'
 
-import { ITextSize, IColor } from './utils'
+import { ITextSize, IColor, IMargin, IPadding, IFontWeight, IRounded } from './utils'
 
 export {
   Button,
   Calendar,
+  CheckBox,
   Image,
   FeatherIcon,
   Pill,
@@ -28,5 +30,9 @@ export {
   theme,
   ITheme,
   ITextSize,
-  IColor
+  IColor,
+  IMargin,
+  IPadding,
+  IFontWeight,
+  IRounded
 }

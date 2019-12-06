@@ -1,9 +1,7 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components/native'
 
-import { Text, ITheme } from '../index'
-import { ISpacing } from '../utils'
-import { FeatherIcon } from '../FeatherIcon'
+import { Text, ITheme, IMargin, FeatherIcon } from '../index'
 
 const Container = styled.TouchableOpacity`
   justify-content: center;
@@ -65,7 +63,7 @@ const Container = styled.TouchableOpacity`
   }};
 `
 
-interface IProps extends ISpacing {
+interface IProps extends IMargin {
   title?: string
   variant?: 'contained' | 'outlined'
   color?: 'primary' | 'danger' | 'neutral'

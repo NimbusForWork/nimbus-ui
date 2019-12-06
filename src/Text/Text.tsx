@@ -1,8 +1,7 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components/native'
 
-import { IFontWeight, IColor, ITextSize, ISpacing } from '../utils'
-import { ITheme } from '../theme'
+import { ITheme, IFontWeight, IColor, ITextSize, IMargin } from '../index'
 
 const Container = styled.Text`
   color: ${({ color, theme }: { color: string; theme: ITheme }) => theme.colors[color as string]};
@@ -29,7 +28,7 @@ const Container = styled.Text`
   }};
 `
 
-interface IProps extends IColor, ITextSize, ISpacing, IFontWeight {
+interface IProps extends IColor, ITextSize, IMargin, IFontWeight {
   text: string
 }
 

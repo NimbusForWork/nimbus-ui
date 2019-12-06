@@ -27,6 +27,15 @@ export interface IColor {
     | 'danger700'
     | 'danger800'
     | 'danger900'
+    | 'success100'
+    | 'success200'
+    | 'success300'
+    | 'success400'
+    | 'success500'
+    | 'success600'
+    | 'success700'
+    | 'success800'
+    | 'success900'
     | 'dark'
     | 'white'
 }
@@ -54,7 +63,11 @@ export interface ISpacingPosition {
   right?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl'
 }
 
-export interface ISpacing {
+export interface IMargin {
   margin?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | ISpacingPosition
+}
+
+export interface IPadding {
   padding?: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | ISpacingPosition
 }
+export interface ISpacing extends IMargin, IPadding {}

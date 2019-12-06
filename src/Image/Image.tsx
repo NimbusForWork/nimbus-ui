@@ -1,9 +1,7 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components/native'
 
-import { IRounded, ISpacing } from '../utils'
-
-import { ITheme } from '..'
+import { IRounded, IMargin, ITheme } from '../index'
 
 const Container = styled.Image`
   width: ${({ width }: { width: number }) => width};
@@ -45,7 +43,7 @@ const Container = styled.Image`
   }};
 `
 
-interface IProps extends IRounded, ISpacing {
+interface IProps extends IRounded, IMargin {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   src: any
   width: number
