@@ -31,6 +31,8 @@ interface IProps {
   numberOfLines?: number
   secureTextEntry?: boolean
   onChangeText: Function
+  onContentSizeChange?: Function
+  inputStyle?: any
 }
 
 const TextInput: FC<IProps> = ({
@@ -42,7 +44,9 @@ const TextInput: FC<IProps> = ({
   multiline = false,
   placeholder,
   numberOfLines,
-  secureTextEntry
+  secureTextEntry,
+  onContentSizeChange,
+  inputStyle
 }) => {
   return (
     <Container>
@@ -50,6 +54,7 @@ const TextInput: FC<IProps> = ({
       <Content>
         {desc ? <Text text={desc} size="sm" margin={{ bottom: 'md' }} /> : null}
         <Input
+          style={inputStyle}
           placeholder={placeholder}
           multiline={multiline}
           editable={editable}
@@ -58,6 +63,7 @@ const TextInput: FC<IProps> = ({
           value={value}
           numberOfLines={numberOfLines}
           secureTextEntry={secureTextEntry}
+          onContentSizeChange={onContentSizeChange}
         />
       </Content>
     </Container>
