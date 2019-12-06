@@ -28,10 +28,22 @@ interface IProps {
   editable?: boolean
   multiline?: boolean
   placeholder?: string
+  numberOfLines?: number
+  secureTextEntry?: boolean
   onChangeText: Function
 }
 
-const TextInput: FC<IProps> = ({ label = '', desc = '', onChangeText, value, editable, multiline, placeholder }) => {
+const TextInput: FC<IProps> = ({
+  label = '',
+  desc = '',
+  onChangeText,
+  value,
+  editable,
+  multiline = false,
+  placeholder,
+  numberOfLines,
+  secureTextEntry
+}) => {
   return (
     <Container>
       <Text text={label} fontWeight="bold" margin={{ left: '2xl', bottom: '2xl' }} />
@@ -44,6 +56,8 @@ const TextInput: FC<IProps> = ({ label = '', desc = '', onChangeText, value, edi
           disabled={editable}
           onChangeText={text => onChangeText(text)}
           value={value}
+          numberOfLines={numberOfLines}
+          secureTextEntry={secureTextEntry}
         />
       </Content>
     </Container>
