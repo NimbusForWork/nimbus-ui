@@ -1,10 +1,29 @@
 import React, { FC } from 'react'
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 
-import { Text, ITheme } from '../index'
+import { Text, ITheme, IMargin } from '../index'
 
 const Container = styled.View`
-  height: 60;
+  min-height: 68;
+
+  ${({ margin, theme }: { margin: any; theme: ITheme }) => {
+    if (margin) {
+      if (typeof margin === 'string') {
+        return css`
+          margin: ${theme.spacing[margin]}px;
+        `
+      }
+
+      return css`
+        margin-top: ${theme.spacing[margin.top || 'none']};
+        margin-bottom: ${theme.spacing[margin.bottom || 'none']};
+        margin-left: ${theme.spacing[margin.left || 'none']};
+        margin-right: ${theme.spacing[margin.right || 'none']};
+      `
+    }
+
+    return null
+  }};
 `
 
 const Content = styled.View`
@@ -21,7 +40,7 @@ const Input = styled.TextInput`
   color: ${({ theme }: { theme: ITheme }) => theme.colors.neutral700};
 `
 
-interface IProps {
+interface IProps extends IMargin {
   value: string
   label?: string
   desc?: string
@@ -46,10 +65,11 @@ const TextInput: FC<IProps> = ({
   numberOfLines,
   secureTextEntry,
   onContentSizeChange,
-  inputStyle
+  inputStyle,
+  margin
 }) => {
   return (
-    <Container>
+    <Container margin={margin}>
       <Text text={label} fontWeight="bold" margin={{ left: '2xl', bottom: '2xl' }} />
       <Content>
         {desc ? <Text text={desc} size="sm" margin={{ bottom: 'md' }} /> : null}
