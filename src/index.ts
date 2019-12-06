@@ -4,6 +4,7 @@ import { Image } from './Image'
 import { FeatherIcon } from './FeatherIcon'
 import { Pill } from './Pill'
 import { Text } from './Text'
+import { TextInput } from './TextInput'
 import { Row } from './Row'
 
 import FontFamily from './fonts'
@@ -19,6 +20,7 @@ export {
   FeatherIcon,
   Pill,
   Text,
+  TextInput,
   Row,
   baseColor,
   FontFamily,
