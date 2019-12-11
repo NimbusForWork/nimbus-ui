@@ -68,12 +68,19 @@ export interface ITheme {
   }
 
   spacing: {
+    /** Spacing size none: 0px */
     none: number
+    /** Spacing size none: 2px */
     sm: number
+    /** Spacing size none: 4px */
     base: number
+    /** Spacing size none: 6px */
     md: number
+    /** Spacing size none: 8px */
     lg: number
+    /** Spacing size none: 10px */
     xl: number
+    /** Spacing size none: 12px */
     '2xl': number
   }
 

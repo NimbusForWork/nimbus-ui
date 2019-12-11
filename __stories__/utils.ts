@@ -23,3 +23,13 @@ export const optsColors = {
   'Danger 600': 'danger600',
   'Danger 700': 'danger700'
 }
+
+export const spacingOpts = {
+  none: 'none',
+  sm: 'sm',
+  base: 'base',
+  md: 'md',
+  lg: 'lg',
+  xl: 'xl',
+  '2xl': '2xl'
+}

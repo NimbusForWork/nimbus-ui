@@ -2,11 +2,13 @@ import React from 'react'
 import { create } from 'react-test-renderer'
 import { ThemeProvider } from 'styled-components/native'
 import 'jest-styled-components/native'
+import MockDate from 'mockdate'
 
 import { Calendar } from '../src'
 import theme from '../src/theme'
 
 test('Calendar should render', () => {
+  MockDate.set('2019-11-11')
   const component = create(
     <ThemeProvider theme={theme}>
       <Calendar

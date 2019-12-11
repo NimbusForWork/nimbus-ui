@@ -30,11 +30,12 @@ const Container = styled.Text`
 
 interface IProps extends IColor, ITextSize, IMargin, IFontWeight {
   text: string
+  style?: any
 }
 
-const Text: FC<IProps> = ({ color = 'neutral700', text, size = 'base', margin, fontWeight = 'base' }) => {
+const Text: FC<IProps> = ({ color = 'neutral700', text, size = 'base', margin, fontWeight = 'base', style }) => {
   return (
-    <Container color={color} size={size} margin={margin} fontWeight={fontWeight}>
+    <Container style={style} color={color} size={size} margin={margin} fontWeight={fontWeight}>
       {text}
     </Container>
   )

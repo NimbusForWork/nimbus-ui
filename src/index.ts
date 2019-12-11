@@ -12,7 +12,7 @@ import FontFamily from './fonts'
 import baseColor, { IBaseColor } from './color'
 import theme, { ITheme } from './theme'
 
-import { ITextSize, IColor, IMargin, IPadding, IFontWeight, IRounded } from './utils'
+import { ITextSize, IColor, IMargin, IPadding, ISpacing, IFontWeight, IRounded } from './utils'
 
 export {
   Button,
@@ -33,6 +33,7 @@ export {
   IColor,
   IMargin,
   IPadding,
+  ISpacing,
   IFontWeight,
   IRounded
 }
