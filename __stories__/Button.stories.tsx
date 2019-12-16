@@ -44,3 +44,49 @@ export const Default = () => {
     />
   )
 }
+
+export const withAllButton = () => {
+  return (
+    <>
+      <Button
+        title="Click Me"
+        variant="contained"
+        color="primary"
+        onPress={() => alert('Button clicked')}
+        margin={{ bottom: '2xl' }}
+      />
+      <Button
+        title="Click Me"
+        variant="outlined"
+        color="primary"
+        onPress={() => alert('Button clicked')}
+        margin={{ bottom: '2xl' }}
+      />
+
+      <Button
+        title="Click Me"
+        variant="contained"
+        color="primary"
+        onPress={() => alert('Button clicked')}
+        margin={{ bottom: '2xl' }}
+        loading
+      />
+
+      <Button
+        title="Click Me"
+        variant="contained"
+        color="neutral"
+        onPress={() => alert('Button clicked')}
+        margin={{ bottom: '2xl' }}
+      />
+
+      <Button
+        title="Click Me"
+        variant="outlined"
+        color="neutral"
+        onPress={() => alert('Button clicked')}
+        margin={{ bottom: '2xl' }}
+      />
+    </>
+  )
+}

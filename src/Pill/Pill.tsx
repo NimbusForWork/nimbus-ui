@@ -5,11 +5,20 @@ import { Text, ITheme } from '../index'
 import { IColor } from '../utils'
 
 const Container = styled.View`
-  ${({ color, theme }: { color: string; theme: ITheme }) =>
-    color &&
-    css`
+  ${({ color, variant, theme }: { color: string; variant: string; theme: ITheme }) => {
+    if (variant === 'outlined') {
+      return css`
+        background-color: ${theme.colors.white};
+        border-color: ${theme.colors[color]};
+        border-style: solid;
+        border-width: 1px;
+      `
+    }
+
+    return css`
       background-color: ${theme.colors[color]};
-    `}
+    `
+  }}
 
   height: 25;
   border-radius: ${25 / 2};
@@ -22,10 +31,15 @@ const Container = styled.View`
 
 interface IProps extends IColor {
   text: string
+  variant?: 'contained' | 'outlined'
 }
 
-const Pill: FC<IProps> = ({ children, text, color = 'primary700' }) => {
-  return <Container color={color}>{children || <Text text={text} color="white" fontWeight="bold" />}</Container>
+const Pill: FC<IProps> = ({ children, text, color = 'primary700', variant = 'contained' }) => {
+  return (
+    <Container color={color} variant={variant}>
+      {children || <Text text={text} color={variant === 'outlined' ? color : 'white'} fontWeight="bold" />}
+    </Container>
+  )
 }
 
 export default Pill
