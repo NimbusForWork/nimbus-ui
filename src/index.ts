@@ -6,6 +6,7 @@ import { FeatherIcon } from './FeatherIcon'
 import { Pill } from './Pill'
 import { Text } from './Text'
 import { TextInput } from './TextInput'
+import { Radio } from './Radio'
 import { Row } from './Row'
 
 import FontFamily from './fonts'
@@ -23,6 +24,7 @@ export {
   Pill,
   Text,
   TextInput,
+  Radio,
   Row,
   baseColor,
   FontFamily,

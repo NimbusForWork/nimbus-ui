@@ -1,8 +1,9 @@
 import React from 'react'
-import { withKnobs } from '@storybook/addon-knobs'
+import { withKnobs, text } from '@storybook/addon-knobs'
 import styled from 'styled-components/native'
 
 import { CheckBox, Text } from '../src/index'
+import { updateKnob } from '../.storybook/helper'
 
 const Box = styled.View`
   flex: 1;
@@ -13,6 +14,26 @@ const Box = styled.View`
 export default { title: 'CheckBox', component: CheckBox, decorators: [withKnobs] }
 
 export const Default = () => {
+  const status: any = text('Status', 'unchecked')
+
+  return (
+    <Box>
+      <CheckBox
+        status={status}
+        onPress={() => {
+          if (status === 'unchecked') updateKnob('Status', 'checked')
+          else if (status === 'checked') updateKnob('Status', 'indeterminate')
+          else updateKnob('Status', 'unchecked')
+        }}
+        margin={{ right: 'xl' }}
+      />
+
+      <Text text="Click me" />
+    </Box>
+  )
+}
+
+export const withAllStatus = () => {
   return (
     <Box>
       <CheckBox status="unchecked" onPress={() => alert('CheckBox Clicked')} margin={{ right: 'xl' }} />
