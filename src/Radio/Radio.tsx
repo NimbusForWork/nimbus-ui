@@ -32,9 +32,12 @@ interface IProps extends IMargin {
   onPress: Function
 }
 
+/**
+ * Note:
+ * This component does not support radio group. It depends on the data with status
+ */
 const Radio: FC<IProps> = ({ status, onPress, margin }) => {
   const color = 'neutral700'
-  //   const colorIcon: any = status === 'checked' ? 'white' : `${color}700`
 
   let name = 'circle'
   if (status === 'checked') name = 'check-circle'
