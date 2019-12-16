@@ -72,7 +72,6 @@ const TextInput: FC<IProps> = ({
     <Container margin={margin}>
       <Text text={label} fontWeight="bold" margin={{ left: '2xl', bottom: '2xl' }} />
       <Content>
-        {desc ? <Text text={desc} size="sm" margin={{ bottom: 'md' }} /> : null}
         <Input
           style={inputStyle}
           placeholder={placeholder}
@@ -85,6 +84,8 @@ const TextInput: FC<IProps> = ({
           secureTextEntry={secureTextEntry}
           onContentSizeChange={onContentSizeChange}
         />
+
+        {desc ? <Text text={desc} size="sm" margin={{ top: 'lg' }} style={{ textAlign: 'right' }} /> : null}
       </Content>
     </Container>
   )
