@@ -1,10 +1,29 @@
 import React, { FC, useState, useEffect } from 'react'
 import styled, { css } from 'styled-components/native'
-import { Animated, Dimensions, FlatList } from 'react-native'
-import { startOfWeek, addDays, getMonth, getYear, format, isSameDay, compareAsc, setMonth, setYear } from 'date-fns'
+import { Animated, Dimensions, FlatList, TouchableOpacity } from 'react-native'
+import {
+  startOfWeek,
+  addDays,
+  getMonth,
+  getYear,
+  format,
+  isSameDay,
+  compareAsc,
+  setMonth,
+  setYear,
+  getHours,
+  getMinutes,
+  set,
+  addHours,
+  subHours,
+  addMinutes,
+  subMinutes
+} from 'date-fns'
 
-import { ITheme, Button, FeatherIcon } from '../index'
+import { ITheme, Button } from '../index'
 import { Text } from '../Text'
+import baseColor from '../color'
+import { FeatherIcon } from '../FeatherIcon'
 
 const Box = styled.View`
   justify-content: center;
@@ -20,24 +39,6 @@ const ModalContent = styled.View`
   width: 330;
   background: ${({ theme }: { theme: ITheme }) => theme.colors.white};
   border-radius: ${({ theme }: { theme: ITheme }) => theme.rounded.xl};
-`
-
-const Header = styled.View`
-  height: 50;
-  flex-direction: row;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-`
-const ButtonWrap = styled.View`
-  flex: 1;
-  max-width: 50;
-`
-const Title = styled.View`
-  flex: 1;
-  justify-content: center;
-  flex-direction: row;
-  margin-right: 50px;
 `
 
 const Footer = styled.View`
@@ -128,9 +129,11 @@ const DateStyled = styled.View`
 
 interface IProps {
   value: Date
-  title: string
+  /** ### title erased. */
+  title?: string
   visible: boolean
   onPress: Function
+  /** ### onClose erased. Using onCancel to instead */
   onClose: Function
   onSelect?: Function
   onCancel?: Function
@@ -356,11 +359,147 @@ const YearList = ({ year, onSelect }: { year: number; onSelect: Function }) => {
   )
 }
 
-const Calendar: FC<IProps> = ({ value, title, visible, onClose, onSelect, onCancel, onPress }) => {
+const TimeWrap = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 56;
+  border-top-color: ${baseColor.gray300};
+  border-top-width: 1;
+  border-style: solid;
+`
+
+const Time = ({ date }: { date: Date }) => {
+  return (
+    <TimeWrap>
+      <Text text={format(date, 'hh')} size="lg" />
+      <Text text=":" margin={{ right: '2xl', left: '2xl' }} color="neutral500" />
+      <Text text={format(date, 'mm')} size="lg" margin={{ right: '2xl' }} />
+      <Text text={format(date, 'a')} margin={{ left: '2xl' }} color="neutral500" />
+    </TimeWrap>
+  )
+}
+
+const TimeViewWrap = styled.View``
+
+const TimeViewHeader = styled.View`
+  height: 50;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  border-bottom-color: ${baseColor.gray300};
+  border-bottom-width: 1;
+  border-style: solid;
+`
+
+const TimeViewTitle = styled.View`
+  flex: 1;
+  justify-content: center;
+  flex-direction: row;
+`
+
+const TimeContentBox = styled.View`
+  padding-top: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
+  padding-bottom: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
+  padding-left: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
+  padding-right: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`
+
+const TimeItem = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`
+
+const TimeView = ({ date, onChange }: { date: Date; onChange: Function }) => {
+  return (
+    <TimeViewWrap>
+      <TimeViewHeader>
+        <TimeViewTitle>
+          <Text text={format(date, 'E dd MMM, yyyy')} size="md" margin={{ right: '2xl' }} />
+          <FeatherIcon name="chevron-down" color="primary700" size="lg" />
+        </TimeViewTitle>
+      </TimeViewHeader>
+      <TimeContentBox>
+        <TimeItem>
+          <Button
+            onPress={() => {
+              const val = addHours(date, 1)
+              onChange(val)
+            }}
+          >
+            <FeatherIcon name="chevron-up" color="neutral500" size="lg" />
+          </Button>
+
+          <Text text={format(date, 'hh')} size="xl" fontWeight="bold" />
+
+          <Button
+            onPress={() => {
+              const val = subHours(date, 1)
+              onChange(val)
+            }}
+          >
+            <FeatherIcon name="chevron-down" color="neutral500" size="lg" />
+          </Button>
+        </TimeItem>
+        <TimeItem>
+          <Button
+            onPress={() => {
+              const val = addMinutes(date, 1)
+              onChange(val)
+            }}
+          >
+            <FeatherIcon name="chevron-up" color="neutral500" size="lg" />
+          </Button>
+
+          <Text text={format(date, 'mm')} size="xl" fontWeight="bold" />
+
+          <Button
+            onPress={() => {
+              const val = subMinutes(date, 1)
+              onChange(val)
+            }}
+          >
+            <FeatherIcon name="chevron-down" color="neutral500" size="lg" />
+          </Button>
+        </TimeItem>
+        <TimeItem>
+          <Button
+            onPress={() => {
+              const val = addHours(date, 12)
+              onChange(val)
+            }}
+          >
+            <FeatherIcon name="chevron-up" color="neutral500" size="lg" />
+          </Button>
+
+          <Text text={format(date, 'a')} size="lg" color="neutral500" />
+
+          <Button
+            onPress={() => {
+              const val = subHours(date, 12)
+              onChange(val)
+            }}
+          >
+            <FeatherIcon name="chevron-down" color="neutral500" size="lg" />
+          </Button>
+        </TimeItem>
+      </TimeContentBox>
+    </TimeViewWrap>
+  )
+}
+
+const Calendar: FC<IProps> = ({ value, visible, onSelect, onCancel, onPress }) => {
   const [fadeAnim] = useState(new Animated.Value(0))
-  const [val, setVal] = useState(value)
+  const [val, setVal] = useState(set(value, { hours: getHours(new Date()), minutes: getMinutes(new Date()) }))
   const [showMonth, setShowMonth] = useState(false)
   const [showYear, setShowYear] = useState(false)
+  const [showTime, setShowTime] = useState(false)
 
   const [selectedMonth, setSelectedMonth] = useState(getMonth(val))
   const [selectedYear, setSelectedYear] = useState(getYear(val))
@@ -385,55 +524,65 @@ const Calendar: FC<IProps> = ({ value, title, visible, onClose, onSelect, onCanc
     <Animated.View style={{ opacity: fadeAnim }}>
       <Box>
         <ModalContent>
-          <Header>
-            <ButtonWrap>
-              <Button onPress={() => onClose()}>
-                <FeatherIcon name="x" size="xl" />
-              </Button>
-            </ButtonWrap>
-            <Title>
-              <Text text={title} />
-            </Title>
-          </Header>
+          {!showTime && (
+            <>
+              <ContentBox>
+                {!showMonth && !showYear && (
+                  <DateList
+                    data={matrix}
+                    currentDate={val}
+                    onSelectDate={date => {
+                      const hours = getHours(val)
+                      const minutes = getMinutes(val)
+                      const d = set(date, { hours, minutes })
+                      setVal(d)
+                      onPress(d)
+                    }}
+                    month={selectedMonth}
+                    setShowMonth={val => setShowMonth(val)}
+                  />
+                )}
 
-          <ContentBox>
-            {!showMonth && !showYear && (
-              <DateList
-                data={matrix}
-                currentDate={val}
-                onSelectDate={date => {
-                  setVal(date)
-                  onPress(date)
-                }}
-                month={selectedMonth}
-                setShowMonth={val => setShowMonth(val)}
-              />
-            )}
+                {showMonth && !showYear && (
+                  <MonthList
+                    month={selectedMonth}
+                    year={selectedYear}
+                    setShowYear={val => setShowYear(val)}
+                    onSelectMonth={m => {
+                      setSelectedMonth(m)
+                      setVal(setMonth(val, m))
+                      setShowMonth(false)
+                    }}
+                  />
+                )}
 
-            {showMonth && !showYear && (
-              <MonthList
-                month={selectedMonth}
-                year={selectedYear}
-                setShowYear={val => setShowYear(val)}
-                onSelectMonth={m => {
-                  setSelectedMonth(m)
-                  setVal(setMonth(val, m))
-                  setShowMonth(false)
-                }}
-              />
-            )}
+                {showYear && (
+                  <YearList
+                    year={selectedYear}
+                    onSelect={y => {
+                      setSelectedYear(y)
+                      setVal(setYear(val, y))
+                      setShowYear(false)
+                    }}
+                  />
+                )}
+              </ContentBox>
 
-            {showYear && (
-              <YearList
-                year={selectedYear}
-                onSelect={y => {
-                  setSelectedYear(y)
-                  setVal(setYear(val, y))
-                  setShowYear(false)
-                }}
-              />
-            )}
-          </ContentBox>
+              <TouchableOpacity onPress={() => setShowTime(true)}>
+                <Time date={val} />
+              </TouchableOpacity>
+            </>
+          )}
+
+          {showTime && (
+            <TimeView
+              date={val}
+              onChange={date => {
+                const d = set(val, { hours: getHours(date), minutes: getMinutes(date) })
+                setVal(d)
+              }}
+            />
+          )}
 
           <Footer>
             <Button
@@ -441,14 +590,14 @@ const Calendar: FC<IProps> = ({ value, title, visible, onClose, onSelect, onCanc
               margin={{ right: '2xl' }}
               title="Cancel"
               variant="outlined"
-              color="neutral"
+              color="primary"
               onPress={() => onCancel && onCancel()}
             />
             <Button
               style={{ flex: 1 }}
               variant="contained"
               title="Select"
-              color="neutral"
+              color="primary"
               onPress={() => {
                 if (onSelect) onSelect(val)
               }}
