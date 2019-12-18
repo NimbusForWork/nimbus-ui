@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react'
 import styled, { css } from 'styled-components/native'
-import { Animated, Dimensions, FlatList, TouchableOpacity } from 'react-native'
+import { Animated, Dimensions, FlatList, TouchableOpacity, ScrollView } from 'react-native'
 import {
   startOfWeek,
   addDays,
@@ -24,6 +24,7 @@ import { ITheme, Button } from '../index'
 import { Text } from '../Text'
 import baseColor from '../color'
 import { FeatherIcon } from '../FeatherIcon'
+// import { Slider } from '../Slider'
 
 const Box = styled.View`
   justify-content: center;
@@ -39,6 +40,7 @@ const ModalContent = styled.View`
   width: 330;
   background: ${({ theme }: { theme: ITheme }) => theme.colors.white};
   border-radius: ${({ theme }: { theme: ITheme }) => theme.rounded.xl};
+  max-height: 475;
 `
 
 const Footer = styled.View`
@@ -64,6 +66,8 @@ const Overlay = styled.View`
   margin-right: auto;
   z-index: 99;
 `
+
+const Datewrap = styled.View``
 
 const ContentBox = styled.View`
   padding-top: ${({ theme }: { theme: ITheme }) => theme.spacing['2xl']};
@@ -129,11 +133,11 @@ const DateStyled = styled.View`
 
 interface IProps {
   value: Date
-  /** ### title erased. */
+  /** ### title deprecated. */
   title?: string
   visible: boolean
   onPress: Function
-  /** ### onClose erased. Using onCancel to instead */
+  /** ### onClose deprecated. Using onCancel to instead */
   onClose: Function
   onSelect?: Function
   onCancel?: Function
@@ -376,12 +380,15 @@ const Time = ({ date }: { date: Date }) => {
       <Text text={format(date, 'hh')} size="lg" />
       <Text text=":" margin={{ right: '2xl', left: '2xl' }} color="neutral500" />
       <Text text={format(date, 'mm')} size="lg" margin={{ right: '2xl' }} />
-      <Text text={format(date, 'a')} margin={{ left: '2xl' }} color="neutral500" />
+      <Text text={format(date, 'a')} margin={{ left: '2xl', right: '2xl' }} color="neutral500" />
+      <FeatherIcon name="chevron-up" color="primary700" size="lg" />
     </TimeWrap>
   )
 }
 
-const TimeViewWrap = styled.View``
+const TimeViewWrap = styled.View`
+  display: ${props => (props.show ? 'block' : 'none')};
+`
 
 const TimeViewHeader = styled.View`
   height: 50;
@@ -416,15 +423,27 @@ const TimeItem = styled.View`
   align-items: center;
 `
 
-const TimeView = ({ date, onChange }: { date: Date; onChange: Function }) => {
+const TimeView = ({
+  show,
+  date,
+  onChange,
+  onPress
+}: {
+  show: boolean
+  date: Date
+  onChange: Function
+  onPress: Function
+}) => {
   return (
-    <TimeViewWrap>
-      <TimeViewHeader>
-        <TimeViewTitle>
-          <Text text={format(date, 'E dd MMM, yyyy')} size="md" margin={{ right: '2xl' }} />
-          <FeatherIcon name="chevron-down" color="primary700" size="lg" />
-        </TimeViewTitle>
-      </TimeViewHeader>
+    <TimeViewWrap show={show}>
+      <TouchableOpacity onPress={() => onPress()}>
+        <TimeViewHeader>
+          <TimeViewTitle>
+            <Text text={format(date, 'E dd MMM, yyyy')} size="md" margin={{ right: '2xl' }} />
+            <FeatherIcon name="chevron-down" color="primary700" size="lg" />
+          </TimeViewTitle>
+        </TimeViewHeader>
+      </TouchableOpacity>
       <TimeContentBox>
         <TimeItem>
           <Button
@@ -447,10 +466,11 @@ const TimeView = ({ date, onChange }: { date: Date; onChange: Function }) => {
             <FeatherIcon name="chevron-down" color="neutral500" size="lg" />
           </Button>
         </TimeItem>
+
         <TimeItem>
           <Button
             onPress={() => {
-              const val = addMinutes(date, 1)
+              const val = addMinutes(date, 10)
               onChange(val)
             }}
           >
@@ -461,13 +481,14 @@ const TimeView = ({ date, onChange }: { date: Date; onChange: Function }) => {
 
           <Button
             onPress={() => {
-              const val = subMinutes(date, 1)
+              const val = subMinutes(date, 10)
               onChange(val)
             }}
           >
             <FeatherIcon name="chevron-down" color="neutral500" size="lg" />
           </Button>
         </TimeItem>
+
         <TimeItem>
           <Button
             onPress={() => {
@@ -496,6 +517,7 @@ const TimeView = ({ date, onChange }: { date: Date; onChange: Function }) => {
 
 const Calendar: FC<IProps> = ({ value, visible, onSelect, onCancel, onPress }) => {
   const [fadeAnim] = useState(new Animated.Value(0))
+
   const [val, setVal] = useState(set(value, { hours: getHours(new Date()), minutes: getMinutes(new Date()) }))
   const [showMonth, setShowMonth] = useState(false)
   const [showYear, setShowYear] = useState(false)
@@ -524,85 +546,89 @@ const Calendar: FC<IProps> = ({ value, visible, onSelect, onCancel, onPress }) =
     <Animated.View style={{ opacity: fadeAnim }}>
       <Box>
         <ModalContent>
-          {!showTime && (
-            <>
-              <ContentBox>
-                {!showMonth && !showYear && (
-                  <DateList
-                    data={matrix}
-                    currentDate={val}
-                    onSelectDate={date => {
-                      const hours = getHours(val)
-                      const minutes = getMinutes(val)
-                      const d = set(date, { hours, minutes })
-                      setVal(d)
-                      onPress(d)
-                    }}
-                    month={selectedMonth}
-                    setShowMonth={val => setShowMonth(val)}
-                  />
-                )}
+          <ScrollView style={{ maxHeight: 475 }}>
+            {!showTime && (
+              <Datewrap>
+                <ContentBox>
+                  {!showMonth && !showYear && (
+                    <DateList
+                      data={matrix}
+                      currentDate={val}
+                      onSelectDate={date => {
+                        const hours = getHours(val)
+                        const minutes = getMinutes(val)
+                        const d = set(date, { hours, minutes })
+                        setVal(d)
+                        onPress(d)
+                      }}
+                      month={selectedMonth}
+                      setShowMonth={val => setShowMonth(val)}
+                    />
+                  )}
 
-                {showMonth && !showYear && (
-                  <MonthList
-                    month={selectedMonth}
-                    year={selectedYear}
-                    setShowYear={val => setShowYear(val)}
-                    onSelectMonth={m => {
-                      setSelectedMonth(m)
-                      setVal(setMonth(val, m))
-                      setShowMonth(false)
-                    }}
-                  />
-                )}
+                  {showMonth && !showYear && (
+                    <MonthList
+                      month={selectedMonth}
+                      year={selectedYear}
+                      setShowYear={val => setShowYear(val)}
+                      onSelectMonth={m => {
+                        setSelectedMonth(m)
+                        setVal(setMonth(val, m))
+                        setShowMonth(false)
+                      }}
+                    />
+                  )}
 
-                {showYear && (
-                  <YearList
-                    year={selectedYear}
-                    onSelect={y => {
-                      setSelectedYear(y)
-                      setVal(setYear(val, y))
-                      setShowYear(false)
-                    }}
-                  />
-                )}
-              </ContentBox>
+                  {showYear && (
+                    <YearList
+                      year={selectedYear}
+                      onSelect={y => {
+                        setSelectedYear(y)
+                        setVal(setYear(val, y))
+                        setShowYear(false)
+                      }}
+                    />
+                  )}
+                </ContentBox>
 
-              <TouchableOpacity onPress={() => setShowTime(true)}>
-                <Time date={val} />
-              </TouchableOpacity>
-            </>
-          )}
+                <TouchableOpacity onPress={() => setShowTime(true)}>
+                  <Time date={val} />
+                </TouchableOpacity>
+              </Datewrap>
+            )}
 
-          {showTime && (
-            <TimeView
-              date={val}
-              onChange={date => {
-                const d = set(val, { hours: getHours(date), minutes: getMinutes(date) })
-                setVal(d)
-              }}
-            />
-          )}
+            {showTime && (
+              <TimeView
+                show={showTime}
+                date={val}
+                onPress={() => setShowTime(false)}
+                onChange={date => {
+                  const d = set(val, { hours: getHours(date), minutes: getMinutes(date) })
+                  setVal(d)
+                }}
+              />
+            )}
 
-          <Footer>
-            <Button
-              style={{ flex: 1 }}
-              margin={{ right: '2xl' }}
-              title="Cancel"
-              variant="outlined"
-              color="primary"
-              onPress={() => onCancel && onCancel()}
-            />
-            <Button
-              style={{ flex: 1 }}
-              variant="contained"
-              title="Select"
-              color="primary"
-              onPress={() => {
-                if (onSelect) onSelect(val)
-              }}
-            />
-          </Footer>
+            <Footer>
+              <Button
+                style={{ flex: 1 }}
+                margin={{ right: '2xl' }}
+                title="Cancel"
+                variant="outlined"
+                color="primary"
+                onPress={() => onCancel && onCancel()}
+              />
+              <Button
+                style={{ flex: 1 }}
+                variant="contained"
+                title="Select"
+                color="primary"
+                onPress={() => {
+                  if (onSelect) onSelect(val)
+                }}
+              />
+            </Footer>
+          </ScrollView>
         </ModalContent>
 
         <Overlay />
