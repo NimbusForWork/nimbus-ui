@@ -6,19 +6,19 @@ import { Text, ITheme, IMargin } from '../index'
 const Container = styled.View`
   min-height: 68;
 
-  ${({ margin, theme }: { margin: any; theme: ITheme }) => {
-    if (margin) {
-      if (typeof margin === 'string') {
+  ${({ marginProp, theme }: { marginProp: any; theme: ITheme }) => {
+    if (marginProp) {
+      if (typeof marginProp === 'string') {
         return css`
-          margin: ${theme.spacing[margin]}px;
+          margin: ${theme.spacing[marginProp]}px;
         `
       }
 
       return css`
-        margin-top: ${theme.spacing[margin.top || 'none']};
-        margin-bottom: ${theme.spacing[margin.bottom || 'none']};
-        margin-left: ${theme.spacing[margin.left || 'none']};
-        margin-right: ${theme.spacing[margin.right || 'none']};
+        margin-top: ${theme.spacing[marginProp.top || 'none']};
+        margin-bottom: ${theme.spacing[marginProp.bottom || 'none']};
+        margin-left: ${theme.spacing[marginProp.left || 'none']};
+        margin-right: ${theme.spacing[marginProp.right || 'none']};
       `
     }
 
@@ -52,10 +52,11 @@ interface IProps extends IMargin {
   onChangeText: Function
   onContentSizeChange?: Function
   inputStyle?: any
+  contentStyle?: any
 }
 
 const TextInput: FC<IProps> = ({
-  label = '',
+  label,
   desc = '',
   onChangeText,
   value,
@@ -66,12 +67,13 @@ const TextInput: FC<IProps> = ({
   secureTextEntry,
   onContentSizeChange,
   inputStyle,
+  contentStyle,
   margin
 }) => {
   return (
-    <Container margin={margin}>
-      <Text text={label} fontWeight="bold" margin={{ left: '2xl', bottom: '2xl' }} />
-      <Content>
+    <Container marginProp={margin}>
+      {label && <Text text={label} fontWeight="bold" margin={{ left: '2xl', bottom: '2xl' }} />}
+      <Content style={contentStyle}>
         <Input
           style={inputStyle}
           placeholder={placeholder}

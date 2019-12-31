@@ -76,7 +76,7 @@ const Content = styled.View`
 /**
  * **NOTE: Margin and Padding always work with custom content
  */
-const Row: FC<IProps> = ({ title = '', subtitle = '', avatar, bottomDivider, children, padding, margin }) => {
+const Row: FC<IProps> = ({ title = '', subtitle, avatar, bottomDivider, children, padding, margin }) => {
   return (
     <Container bottomDivider={bottomDivider} paddingProp={padding} marginProp={margin}>
       {children || (
@@ -84,7 +84,7 @@ const Row: FC<IProps> = ({ title = '', subtitle = '', avatar, bottomDivider, chi
           {avatar && avatar()}
           <Content>
             <Text text={title} size="base" fontWeight={subtitle ? 'bold' : 'base'} margin={{ left: 'lg' }} />
-            {subtitle !== null && <Text text={subtitle} size="base" margin={{ left: 'lg', top: 'sm' }} />}
+            {subtitle && <Text text={subtitle} size="base" margin={{ left: 'lg', top: 'sm' }} />}
           </Content>
         </>
       )}

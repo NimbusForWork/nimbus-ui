@@ -23,19 +23,19 @@ const Container = styled.Image`
     return null
   }}
 
-  ${({ margin, theme }: { margin: any; theme: ITheme }) => {
-    if (margin) {
-      if (typeof margin === 'string') {
+  ${({ marginProp, theme }: { marginProp: any; theme: ITheme }) => {
+    if (marginProp) {
+      if (typeof marginProp === 'string') {
         return css`
-          margin: ${theme.spacing[margin]}px;
+          margin: ${theme.spacing[marginProp]}px;
         `
       }
 
       return css`
-        margin-top: ${theme.spacing[margin.top || 'none']};
-        margin-bottom: ${theme.spacing[margin.bottom || 'none']};
-        margin-left: ${theme.spacing[margin.left || 'none']};
-        margin-right: ${theme.spacing[margin.right || 'none']};
+        margin-top: ${theme.spacing[marginProp.top || 'none']};
+        margin-bottom: ${theme.spacing[marginProp.bottom || 'none']};
+        margin-left: ${theme.spacing[marginProp.left || 'none']};
+        margin-right: ${theme.spacing[marginProp.right || 'none']};
       `
     }
 
@@ -51,7 +51,7 @@ interface IProps extends IRounded, IMargin {
 }
 
 const Image: FC<IProps> = ({ src, width, height, rounded, margin }) => {
-  return <Container source={src} width={width} height={height} rounded={rounded} margin={margin} />
+  return <Container source={src} width={width} height={height} rounded={rounded} marginProp={margin} />
 }
 
 export default Image

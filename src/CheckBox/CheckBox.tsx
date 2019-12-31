@@ -6,19 +6,19 @@ import { FeatherIcon } from '../FeatherIcon'
 import { ITheme, IMargin } from '../index'
 
 const Container = styled.View`
-  ${({ margin, theme }: { margin: any; theme: ITheme }) => {
-    if (margin) {
-      if (typeof margin === 'string') {
+  ${({ marginProp, theme }: { marginProp: any; theme: ITheme }) => {
+    if (marginProp) {
+      if (typeof marginProp === 'string') {
         return css`
-          margin: ${theme.spacing[margin]}px;
+          margin: ${theme.spacing[marginProp]}px;
         `
       }
 
       return css`
-        margin-top: ${theme.spacing[margin.top || 'none']};
-        margin-bottom: ${theme.spacing[margin.bottom || 'none']};
-        margin-left: ${theme.spacing[margin.left || 'none']};
-        margin-right: ${theme.spacing[margin.right || 'none']};
+        margin-top: ${theme.spacing[marginProp.top || 'none']};
+        margin-bottom: ${theme.spacing[marginProp.bottom || 'none']};
+        margin-left: ${theme.spacing[marginProp.left || 'none']};
+        margin-right: ${theme.spacing[marginProp.right || 'none']};
       `
     }
 
@@ -58,7 +58,7 @@ const CheckBox: FC<IProps> = ({ status, color = 'primary', onPress, margin }) =>
 
   return (
     <TouchableOpacity onPress={() => onPress()}>
-      <Container margin={margin}>
+      <Container marginProp={margin}>
         <Rectangle color={color} status={status}>
           {status !== 'unchecked' && <FeatherIcon name={name} color={colorIcon} />}
         </Rectangle>

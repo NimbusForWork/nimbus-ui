@@ -8,19 +8,19 @@ const Container = styled.Text`
   font-size: ${({ size, theme }: { size: string; theme: ITheme }) => theme.textSize[size]};
   font-family: ${({ theme, fontWeight }: { theme: ITheme; fontWeight: string }) => `${theme.fontFamily}_${fontWeight}`};
 
-  ${({ margin, theme }: { margin: any; theme: ITheme }) => {
-    if (margin) {
-      if (typeof margin === 'string') {
+  ${({ marginProp, theme }: { marginProp: any; theme: ITheme }) => {
+    if (marginProp) {
+      if (typeof marginProp === 'string') {
         return css`
-          margin: ${theme.spacing[margin]}px;
+          margin: ${theme.spacing[marginProp]}px;
         `
       }
 
       return css`
-        margin-top: ${theme.spacing[margin.top || 'none']};
-        margin-bottom: ${theme.spacing[margin.bottom || 'none']};
-        margin-left: ${theme.spacing[margin.left || 'none']};
-        margin-right: ${theme.spacing[margin.right || 'none']};
+        margin-top: ${theme.spacing[marginProp.top || 'none']};
+        margin-bottom: ${theme.spacing[marginProp.bottom || 'none']};
+        margin-left: ${theme.spacing[marginProp.left || 'none']};
+        margin-right: ${theme.spacing[marginProp.right || 'none']};
       `
     }
 
@@ -35,7 +35,7 @@ interface IProps extends IColor, ITextSize, IMargin, IFontWeight {
 
 const Text: FC<IProps> = ({ color = 'neutral700', text, size = 'base', margin, fontWeight = 'base', style }) => {
   return (
-    <Container style={style} color={color} size={size} margin={margin} fontWeight={fontWeight}>
+    <Container style={style} color={color} size={size} marginProp={margin} fontWeight={fontWeight}>
       {text}
     </Container>
   )
