@@ -387,7 +387,7 @@ const Time = ({ date }: { date: Date }) => {
 }
 
 const TimeViewWrap = styled.View`
-  display: ${props => (props.show ? 'block' : 'none')};
+  display: ${props => (props.show ? 'flex' : 'none')};
 `
 
 const TimeViewHeader = styled.View`
