@@ -15,8 +15,11 @@ export const Default = () => {
 
       <Calendar
         value={new Date()}
+        mode="date-time"
         title="Check-in -- Checkout"
         visible={visible}
+        minDate={new Date('2020-1-1')}
+        incrementMinutes={10}
         onClose={() => updateKnob('Visible', false)}
         onPress={item => alert(item)}
         onSelect={value => alert(value)}

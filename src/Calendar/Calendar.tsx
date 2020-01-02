@@ -9,15 +9,14 @@ import {
   format,
   isSameDay,
   compareAsc,
-  setMonth,
-  setYear,
   getHours,
   getMinutes,
   set,
   addHours,
   subHours,
   addMinutes,
-  subMinutes
+  subMinutes,
+  isAfter
 } from 'date-fns'
 
 import { ITheme, Button } from '../index'
@@ -121,21 +120,24 @@ const DateStyled = styled.View`
       height: 30;
     `}
 
-  ${({ currentDate, theme }: { currentDate: boolean; theme: ITheme }) =>
+  ${({ currentDate, theme, levelColor }: { currentDate: boolean; theme: ITheme; levelColor: string }) =>
     currentDate &&
     css`
       width: 30;
       height: 30;
-      background: ${theme.colors.primary700};
+      background: ${theme.colors[`primary${levelColor}`]};
       border-radius: 15;
     `}
 `
 
 interface IProps {
+  mode?: 'date' | 'time' | 'date-time'
   value: Date
   /** ### title deprecated. */
   title?: string
   visible: boolean
+  minDate?: Date
+  incrementMinutes?: number
   onPress: Function
   /** ### onClose deprecated. Using onCancel to instead */
   onClose: Function
@@ -171,28 +173,49 @@ const getMatrix = (month: number, year: number) => {
 
 const DateList = ({
   data,
+  minDate,
   month,
+  year,
   currentDate,
   onSelectDate,
   setShowMonth
 }: {
   data: Array<Array<Date>>
+  minDate?: Date
   month: number
+  year: number
   currentDate: Date
   onSelectDate: Function
   setShowMonth: Function
 }) => {
   const setColor = item => {
+    let color = 'neutral700'
     if (!isSameDay(new Date(item), new Date()) && compareAsc(item, new Date()) === -1) {
-      return 'neutral400'
+      color = 'neutral400'
+    }
+
+    if (minDate && compareAsc(item, minDate) === -1) {
+      color = 'neutral400'
     }
 
     if (isSameDay(new Date(), item) || isSameDay(currentDate, item)) {
       return 'white'
     }
 
-    return 'neutral700'
+    return color
   }
+
+  const disabledButton = item => {
+    let rs = getMonth(item) !== month
+
+    if (minDate && isAfter(minDate, item)) {
+      rs = true
+    }
+
+    return rs
+  }
+
+  const displayMonthYear = set(new Date(), { month, year })
 
   return (
     <>
@@ -209,7 +232,7 @@ const DateList = ({
       <Rows>
         <Columns>
           <CurrentMonth onPress={() => setShowMonth(true)}>
-            <Text text={format(currentDate, 'MMMM yyyy')} fontWeight="bold" />
+            <Text text={format(displayMonthYear, 'MMMM yyyy')} fontWeight="bold" />
           </CurrentMonth>
         </Columns>
       </Rows>
@@ -220,14 +243,18 @@ const DateList = ({
             {items.map((item, idx1) => (
               <DateItem
                 key={idx1.toString()}
-                disabled={getMonth(item) !== month}
+                disabled={disabledButton(item)}
                 onPress={() => {
                   onSelectDate(item)
                 }}
               >
                 {getMonth(item) === month && (
-                  <DateStyled currentDate={isSameDay(new Date(), item)} active={isSameDay(currentDate, item)}>
-                    <Text text={format(item, 'd')} color={setColor(item)} />
+                  <DateStyled
+                    currentDate={isSameDay(new Date(), item)}
+                    levelColor={isSameDay(currentDate, item) ? '700' : '300'}
+                    active={isSameDay(currentDate, item)}
+                  >
+                    <Text text={format(item, 'd')} color={setColor(item) as any} />
                   </DateStyled>
                 )}
               </DateItem>
@@ -426,24 +453,31 @@ const TimeItem = styled.View`
 const TimeView = ({
   show,
   date,
+  mode,
+  incrementMinutes,
   onChange,
   onPress
 }: {
   show: boolean
   date: Date
+  mode: 'date' | 'time' | 'date-time'
+  incrementMinutes: number
   onChange: Function
   onPress: Function
 }) => {
   return (
     <TimeViewWrap show={show}>
-      <TouchableOpacity onPress={() => onPress()}>
-        <TimeViewHeader>
-          <TimeViewTitle>
-            <Text text={format(date, 'E dd MMM, yyyy')} size="md" margin={{ right: '2xl' }} />
-            <FeatherIcon name="chevron-down" color="primary700" size="lg" />
-          </TimeViewTitle>
-        </TimeViewHeader>
-      </TouchableOpacity>
+      {mode !== 'time' && (
+        <TouchableOpacity onPress={() => onPress()}>
+          <TimeViewHeader>
+            <TimeViewTitle>
+              <Text text={format(date, 'E dd MMM, yyyy')} size="md" margin={{ right: '2xl' }} />
+              <FeatherIcon name="chevron-down" color="primary700" size="lg" />
+            </TimeViewTitle>
+          </TimeViewHeader>
+        </TouchableOpacity>
+      )}
+
       <TimeContentBox>
         <TimeItem>
           <Button
@@ -470,7 +504,7 @@ const TimeView = ({
         <TimeItem>
           <Button
             onPress={() => {
-              const val = addMinutes(date, 10)
+              const val = addMinutes(date, incrementMinutes)
               onChange(val)
             }}
           >
@@ -481,7 +515,7 @@ const TimeView = ({
 
           <Button
             onPress={() => {
-              const val = subMinutes(date, 10)
+              const val = subMinutes(date, incrementMinutes)
               onChange(val)
             }}
           >
@@ -515,13 +549,24 @@ const TimeView = ({
   )
 }
 
-const Calendar: FC<IProps> = ({ value, visible, onSelect, onCancel, onPress }) => {
+const Calendar: FC<IProps> = ({
+  mode = 'date-time',
+  value,
+  visible,
+  incrementMinutes = 1,
+  minDate,
+  onSelect,
+  onCancel,
+  onPress
+}) => {
   const [fadeAnim] = useState(new Animated.Value(0))
 
-  const [val, setVal] = useState(set(value, { hours: getHours(new Date()), minutes: getMinutes(new Date()) }))
+  // const [val, setVal] = useState(set(value, { hours: getHours(new Date()), minutes: getMinutes(new Date()) }))
+  const [val, setVal] = useState(set(value, { hours: getHours(value), minutes: getMinutes(value) }))
+
   const [showMonth, setShowMonth] = useState(false)
   const [showYear, setShowYear] = useState(false)
-  const [showTime, setShowTime] = useState(false)
+  const [showTime, setShowTime] = useState(mode === 'time')
 
   const [selectedMonth, setSelectedMonth] = useState(getMonth(val))
   const [selectedYear, setSelectedYear] = useState(getYear(val))
@@ -547,11 +592,12 @@ const Calendar: FC<IProps> = ({ value, visible, onSelect, onCancel, onPress }) =
       <Box>
         <ModalContent>
           <ScrollView style={{ maxHeight: 475 }}>
-            {!showTime && (
+            {!showTime && ['date', 'date-time'].includes(mode) && (
               <Datewrap>
                 <ContentBox>
                   {!showMonth && !showYear && (
                     <DateList
+                      minDate={minDate}
                       data={matrix}
                       currentDate={val}
                       onSelectDate={date => {
@@ -562,6 +608,7 @@ const Calendar: FC<IProps> = ({ value, visible, onSelect, onCancel, onPress }) =
                         onPress(d)
                       }}
                       month={selectedMonth}
+                      year={selectedYear}
                       setShowMonth={val => setShowMonth(val)}
                     />
                   )}
@@ -573,7 +620,6 @@ const Calendar: FC<IProps> = ({ value, visible, onSelect, onCancel, onPress }) =
                       setShowYear={val => setShowYear(val)}
                       onSelectMonth={m => {
                         setSelectedMonth(m)
-                        setVal(setMonth(val, m))
                         setShowMonth(false)
                       }}
                     />
@@ -584,23 +630,26 @@ const Calendar: FC<IProps> = ({ value, visible, onSelect, onCancel, onPress }) =
                       year={selectedYear}
                       onSelect={y => {
                         setSelectedYear(y)
-                        setVal(setYear(val, y))
                         setShowYear(false)
                       }}
                     />
                   )}
                 </ContentBox>
 
-                <TouchableOpacity onPress={() => setShowTime(true)}>
-                  <Time date={val} />
-                </TouchableOpacity>
+                {['time', 'date-time'].includes(mode) && (
+                  <TouchableOpacity onPress={() => setShowTime(true)}>
+                    <Time date={val} />
+                  </TouchableOpacity>
+                )}
               </Datewrap>
             )}
 
-            {showTime && (
+            {showTime && ['time', 'date-time'].includes(mode) && (
               <TimeView
                 show={showTime}
                 date={val}
+                mode={mode}
+                incrementMinutes={incrementMinutes}
                 onPress={() => setShowTime(false)}
                 onChange={date => {
                   const d = set(val, { hours: getHours(date), minutes: getMinutes(date) })
