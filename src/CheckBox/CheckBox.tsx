@@ -46,10 +46,11 @@ const Rectangle = styled.View`
 interface IProps extends IMargin {
   status: 'unchecked' | 'checked' | 'indeterminate'
   color?: 'primary' | 'neutral' | 'danger' | 'success'
+  disabled?: boolean
   onPress: Function
 }
 
-const CheckBox: FC<IProps> = ({ status, color = 'primary', onPress, margin }) => {
+const CheckBox: FC<IProps> = ({ disabled, status, color = 'primary', onPress, margin }) => {
   let name = ''
   if (status === 'checked') name = 'check'
   if (status === 'indeterminate') name = 'minus'
@@ -57,7 +58,7 @@ const CheckBox: FC<IProps> = ({ status, color = 'primary', onPress, margin }) =>
   const colorIcon: any = status === 'checked' ? 'white' : `${color}700`
 
   return (
-    <TouchableOpacity onPress={() => onPress()}>
+    <TouchableOpacity disabled={disabled} onPress={() => onPress && onPress()}>
       <Container marginProp={margin}>
         <Rectangle color={color} status={status}>
           {status !== 'unchecked' && <FeatherIcon name={name} color={colorIcon} />}

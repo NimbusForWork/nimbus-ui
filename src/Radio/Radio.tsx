@@ -29,6 +29,7 @@ const Container = styled.View`
 interface IProps extends IMargin {
   status: 'unchecked' | 'checked'
   //   color?: 'primary' | 'neutral' | 'danger' | 'success'
+  disabled?: boolean
   onPress: Function
 }
 
@@ -36,14 +37,14 @@ interface IProps extends IMargin {
  * Note:
  * This component does not support radio group. It depends on the data with status
  */
-const Radio: FC<IProps> = ({ status, onPress, margin }) => {
+const Radio: FC<IProps> = ({ disabled, status, onPress, margin }) => {
   const color = 'neutral700'
 
   let name = 'circle'
   if (status === 'checked') name = 'check-circle'
 
   return (
-    <TouchableOpacity onPress={() => onPress()}>
+    <TouchableOpacity disabled={disabled} onPress={() => onPress && onPress()}>
       <Container marginProp={margin}>
         <FeatherIcon name={name} color={color} size="lg" />
       </Container>
