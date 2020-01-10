@@ -40,6 +40,10 @@ export interface IColor {
     | 'white'
 }
 
+export interface ILevelColor {
+  levelColor?: '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'
+}
+
 export interface ITextSize {
   size?: 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
 }
