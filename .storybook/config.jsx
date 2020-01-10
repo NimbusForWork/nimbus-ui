@@ -3,6 +3,7 @@ import { addDecorator, configure, addParameters } from '@storybook/react'
 import styled, { ThemeProvider } from 'styled-components/native'
 import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks'
 
+import nimbusTheme from './nimbus-theme'
 import theme from '../src/theme'
 
 const req = require.context('../__stories__', true, /\.stories\.(tsx|mdx)$/)
@@ -20,6 +21,9 @@ const GlobalStyle = storyFn => {
 }
 
 addParameters({
+  options: {
+    theme: nimbusTheme
+  },
   docs: {
     container: DocsContainer,
     page: DocsPage

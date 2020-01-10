@@ -14,6 +14,8 @@
     "test": "jest -u",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
+    "netlify": "npm run storybook:build && netlify deploy",
+    "netlify:prod": "netlify deploy --prod",
     "deploy": "npm version patch; npm publish --access=public"
   },
   "devDependencies": {

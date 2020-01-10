@@ -9,7 +9,7 @@ import theme from '../src/theme'
 test('Radio should render', () => {
   const component = create(
     <ThemeProvider theme={theme}>
-      <Radio status="checked" onPress={() => console.info('CheckBox Clicked')} />
+      <Radio status="checked" onPress={() => console.info('Radio Clicked')} />
     </ThemeProvider>
   )
 
