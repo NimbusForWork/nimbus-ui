@@ -3,9 +3,26 @@ import { TouchableOpacity } from 'react-native'
 import styled, { css } from 'styled-components/native'
 
 import { FeatherIcon } from '../FeatherIcon'
-import { ITheme, IMargin } from '../index'
+import { ITheme, IMargin, ILevelColor } from '../index'
 
 const Container = styled.View`
+  width: 20;
+  height: 20;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-width: 1;
+  border-radius: 9999;
+  border-color: ${({ color, levelColor, theme }: { color: string; levelColor: string; theme: ITheme }) =>
+    theme.colors[`${color}${levelColor}`]};
+
+  ${({ status, color, levelColor, theme }: { status: string; color: string; levelColor: string; theme: ITheme }) =>
+    status === 'checked' &&
+    css`
+      background-color: ${theme.colors[`${color}${levelColor}`]};
+    `}
+
   ${({ marginProp, theme }: { marginProp: any; theme: ITheme }) => {
     if (marginProp) {
       if (typeof marginProp === 'string') {
@@ -26,10 +43,11 @@ const Container = styled.View`
   }};
 `
 
-interface IProps extends IMargin {
+interface IProps extends IMargin, ILevelColor {
   status: 'unchecked' | 'checked'
-  //   color?: 'primary' | 'neutral' | 'danger' | 'success'
+  color?: 'primary' | 'neutral' | 'danger' | 'success'
   disabled?: boolean
+  style?: any
   onPress: Function
 }
 
@@ -37,16 +55,11 @@ interface IProps extends IMargin {
  * Note:
  * This component does not support radio group. It depends on the data with status
  */
-const Radio: FC<IProps> = ({ disabled, status, onPress, margin }) => {
-  const color = 'neutral700'
-
-  let name = 'circle'
-  if (status === 'checked') name = 'check-circle'
-
+const Radio: FC<IProps> = ({ disabled, style, status, color = 'neutral', onPress, margin, levelColor = '700' }) => {
   return (
     <TouchableOpacity disabled={disabled} onPress={() => onPress && onPress()}>
-      <Container marginProp={margin}>
-        <FeatherIcon name={name} color={color} size="lg" />
+      <Container style={style} status={status} color={color} levelColor={levelColor} marginProp={margin}>
+        {status === 'checked' && <FeatherIcon name="check" color="white" size="sm" />}
       </Container>
     </TouchableOpacity>
   )
