@@ -5,6 +5,7 @@ import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks'
 
 import nimbusTheme from './nimbus-theme'
 import theme from '../src/theme'
+import '../static/styles.css'
 
 const req = require.context('../__stories__', true, /\.stories\.(tsx|mdx)$/)
 

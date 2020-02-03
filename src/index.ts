@@ -3,6 +3,7 @@ import { Calendar } from './Calendar'
 import { CheckBox } from './CheckBox'
 import { Image } from './Image'
 import { FeatherIcon } from './FeatherIcon'
+import { FormBuilder } from './FormBuilder'
 import { Pill } from './Pill'
 import { Text } from './Text'
 import { TextInput } from './TextInput'
@@ -21,6 +22,7 @@ export {
   CheckBox,
   Image,
   FeatherIcon,
+  FormBuilder,
   Pill,
   Text,
   TextInput,
