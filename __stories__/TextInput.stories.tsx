@@ -10,7 +10,7 @@ export const Default = () => {
   const desc = text('Description', 'Info component')
   const value = text('Value', 'Some value changed')
 
-  return <TextInput value={value} label={label} desc={desc} onChangeText={t => console.log(t)} />
+  return <TextInput value={value} cssType="bootstrap" label={label} desc={desc} onChangeText={t => console.log(t)} />
 }
 
 export const withAllTextInput = () => {

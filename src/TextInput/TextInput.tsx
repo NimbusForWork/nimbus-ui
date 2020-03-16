@@ -27,12 +27,28 @@ const Container = styled.View`
 `
 
 const Content = styled.View`
-  border-top-width: 1px;
-  border-bottom-width: 1px;
   border-style: solid;
-  border-color: ${({ theme }: { theme: ITheme }) => theme.colors.neutral400};
   padding: ${({ theme }: { theme: ITheme }) => theme.spacing.xl}px;
   background-color: ${({ theme }: { theme: ITheme }) => theme.colors.white};
+
+  ${({ cssType }: { cssType: string }) => {
+    switch (cssType) {
+      case 'bootstrap':
+        return css`
+          border: 1px;
+          border-radius: 3px;
+          border-color: ${({ theme }: { theme: ITheme }) => theme.colors.neutral400};
+        `
+      case 'row':
+        return css`
+          border-top-width: 1px;
+          border-bottom-width: 1px;
+          border-color: ${({ theme }: { theme: ITheme }) => theme.colors.neutral400};
+        `
+      default:
+        break
+    }
+  }}
 `
 
 const Input = styled.TextInput`
@@ -53,6 +69,7 @@ interface IProps extends IMargin {
   onContentSizeChange?: Function
   inputStyle?: any
   contentStyle?: any
+  cssType?: 'bootstrap' | 'row'
 }
 
 const TextInput: FC<IProps> = ({
@@ -68,12 +85,16 @@ const TextInput: FC<IProps> = ({
   onContentSizeChange,
   inputStyle,
   contentStyle,
-  margin
+  margin,
+  cssType = 'row'
 }) => {
+  const marginLabel = cssType === 'bootstrap' ? { bottom: 'md' } : { left: '2xl', bottom: 'md' }
+
   return (
     <Container marginProp={margin}>
-      {label && <Text text={label} fontWeight="bold" margin={{ left: '2xl', bottom: '2xl' }} />}
-      <Content style={contentStyle}>
+      {label && <Text text={label} fontWeight="bold" margin={marginLabel as any} />}
+
+      <Content style={contentStyle} cssType={cssType}>
         <Input
           style={inputStyle}
           placeholder={placeholder}
@@ -85,10 +106,17 @@ const TextInput: FC<IProps> = ({
           numberOfLines={numberOfLines}
           secureTextEntry={secureTextEntry}
           onContentSizeChange={onContentSizeChange}
+          cssType={cssType}
         />
 
-        {desc ? <Text text={desc} size="sm" margin={{ top: 'lg' }} style={{ textAlign: 'right' }} /> : null}
+        {desc && cssType === 'row' ? (
+          <Text text={desc} size="sm" margin={{ top: 'lg' }} style={{ textAlign: 'right' }} />
+        ) : null}
       </Content>
+
+      {desc && cssType === 'bootstrap' ? (
+        <Text text={desc} size="sm" margin={{ top: 'lg' }} style={{ textAlign: 'right' }} />
+      ) : null}
     </Container>
   )
 }
