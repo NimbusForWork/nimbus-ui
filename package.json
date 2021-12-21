@@ -109,18 +109,6 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "**/*.{ts,tsx}": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
-    ]
-  },
   "dependencies": {
     "@react-native-community/toolbar-android": "^0.2.1",
     "date-fns": "^2.8.1",
