@@ -371,12 +371,14 @@ const Calendar: FC<IProps> = ({ value, title, visible, onClose, onSelect, onCanc
     if (visible) {
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 100
+        duration: 100,
+        useNativeDriver: true
       }).start()
     } else {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 100
+        duration: 100,
+        useNativeDriver: true
       }).start()
     }
   }, [visible])

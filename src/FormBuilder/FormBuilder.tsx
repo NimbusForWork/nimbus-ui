@@ -45,7 +45,7 @@ const FormRender: FC<IFormikPropsExtends> = props => {
     <View style={{ flex: 1 }}>
       {Object.keys(fields).map(k => {
         // render TextInput
-        if (fields[k]['ui:widget'] === 'textinput') {
+        if (fields[k]['ui:widget'] === 'textinput' || fields[k].type === 'string') {
           return (
             <TextInput
               key={k}
@@ -70,7 +70,7 @@ const FormRender: FC<IFormikPropsExtends> = props => {
                 />
               )}
               <Container>
-                {fields[k].items.enum.map((item: string, idx: number) => (
+                {fields[k]?.items?.enum.map((item: string, idx: number) => (
                   <TouchableOpacity
                     key={`${item}_${idx}`}
                     onPress={() =>
@@ -132,7 +132,7 @@ const FormBuilder: FC<IProps> = ({ schema, onSubmit, submitButton }) => {
 
       if (json_schema.properties[k].type === 'array') {
         values[k] = { items: {} }
-        json_schema.properties[k].items.enum.forEach(item => {
+        json_schema.properties[k]?.items?.enum?.forEach(item => {
           values[k].items[item] = 'unchecked'
         })
       }
